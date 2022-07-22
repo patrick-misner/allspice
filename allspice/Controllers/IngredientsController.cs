@@ -26,7 +26,7 @@ namespace allspice.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        Ingredient newIngredient = _iServ.Create(ingredientData);
+        Ingredient newIngredient = _iServ.Create(ingredientData, userInfo.Id);
         return Ok(newIngredient);
       }
       catch (Exception e)
