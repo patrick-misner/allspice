@@ -33,6 +33,10 @@ namespace allspice.Services
     internal Recipe Edit(Recipe recipeData)
     {
       Recipe original = Get(recipeData.Id);
+      if (recipeData.CreatorId != original.CreatorId)
+      {
+        throw new Exception("You cannot edit this");
+      }
       original.Picture = recipeData.Picture ?? original.Picture;
       original.Title = recipeData.Title ?? original.Title;
       original.Subtitle = recipeData.Subtitle ?? original.Subtitle;
@@ -43,6 +47,7 @@ namespace allspice.Services
     }
     internal Recipe Delete(int id, string userId)
     {
+
       Recipe original = Get(id);
       _repo.Delete(id);
       return original;

@@ -19,7 +19,7 @@ namespace allspice.Repositories
       string sql = @"
         SELECT
         r.*,
-        a.*,
+        a.*
         FROM recipes r
         JOIN accounts a ON a.id = r.creatorId
         ";
@@ -34,7 +34,7 @@ namespace allspice.Repositories
       string sql = @"
         SELECT
         r.*,
-        a.*,
+        a.*
         FROM recipes r
         JOIN accounts a ON a.id = r.creatorId
         WHERE a.id = @id
@@ -67,6 +67,7 @@ namespace allspice.Repositories
         title = @Title,
         subtitle = @Subtitle,
         category = @Category
+        WHERE id = @Id
         ";
       _db.Execute(sql, original);
     }

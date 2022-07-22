@@ -27,19 +27,20 @@ namespace allspice.Controllers
       try
       {
         List<Recipe> recipes = _rServ.Get();
-        return Ok(recipes)
-          }
+        return Ok(recipes);
+      }
       catch (Exception e)
       {
         return BadRequest(e.Message);
       }
     }
     [HttpGet("{id}")]
-    public ActionResult<List<Recipe>> Get(int id)
+    public ActionResult<Recipe> Get(int id)
     {
       try
       {
-        Recipe recipe = _rServ.GetHashCode(id);
+        Recipe recipe = _rServ.Get(id);
+        return Ok(recipe);
       }
       catch (Exception e)
       {
@@ -65,7 +66,7 @@ namespace allspice.Controllers
     }
     [HttpPut("{id}")]
     [Authorize]
-    public async Task<ActionResult<Recipe>> Edit(int id, [FromBody] Recipe recipeData)
+    public async Task<ActionResult<Recipe>> EditAsync(int id, [FromBody] Recipe recipeData)
     {
       try
       {
@@ -73,6 +74,7 @@ namespace allspice.Controllers
         recipeData.Id = id;
         recipeData.CreatorId = userInfo.Id;
         Recipe update = _rServ.Edit(recipeData);
+        return Ok(update);
       }
       catch (Exception e)
       {
