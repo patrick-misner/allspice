@@ -29,7 +29,8 @@ namespace allspice.Repositories
         INSERT INTO ingredients
         (name, quantity, recipeId)
         VALUES
-        (@Name, @Quantity, @RecipeId)
+        (@Name, @Quantity, @RecipeId);
+        SELECT LAST_INSERT_ID();
         ";
       int id = _db.ExecuteScalar<int>(sql, ingredientData);
       ingredientData.Id = id;
@@ -45,6 +46,11 @@ namespace allspice.Repositories
         quantity = @Quantity
         WHERE id =@Id
         ";
+      _db.Execute(sql, original);
+    }
+    internal void Delete(Ingredient original)
+    {
+      string sql = "DELETE FROM ingredients WHERE id = @Id LIMIT 1";
       _db.Execute(sql, original);
     }
 

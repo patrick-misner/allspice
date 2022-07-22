@@ -56,15 +56,15 @@ namespace allspice.Services
 
     }
 
-    internal Ingredient Delete(Ingredient ingredientData, string userId)
+    internal Ingredient Delete(int id, string userId)
     {
-      Recipe found = _rServ.Get(ingredientData.RecipeId);
-      Ingredient original = Get(ingredientData.Id);
+      Ingredient original = this.Get(id);
+      Recipe found = _rServ.Get(original.RecipeId);
       if (userId != found.CreatorId)
       {
         throw new Exception("You do not own the recipe for this ingredient");
       }
-      _repo.Delete(ingredientData.Id);
+      _repo.Delete(original);
       return original;
     }
   }

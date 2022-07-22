@@ -68,20 +68,20 @@ namespace allspice.Controllers
       }
     }
 
-    // [HttpDelete("{id}")]
-    // [Authorize]
-    // public async Task<ActionResult<Ingredient>> DeleteAsync(int id)
-    // {
-    //   Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-    //   try
-    //   {
-    //     Ingredient deletedIngredient = _iServ.Delete(id, userInfo.Id);
-    //     return Ok(deletedIngredient);
-    //   }
-    //   catch (Exception e)
-    //   {
-    //     return BadRequest(e.Message);
-    //   }
-    // }
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Ingredient>> DeleteAsync(int id)
+    {
+      Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+      try
+      {
+        Ingredient deletedIngredient = _iServ.Delete(id, userInfo.Id);
+        return Ok(deletedIngredient);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
   }
 }
