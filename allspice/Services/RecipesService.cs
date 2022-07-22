@@ -49,6 +49,10 @@ namespace allspice.Services
     {
 
       Recipe original = Get(id);
+      if (userId != original.CreatorId)
+      {
+        throw new Exception("Delete failed. You are not the creator");
+      }
       _repo.Delete(id);
       return original;
     }

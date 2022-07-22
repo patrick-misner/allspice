@@ -37,7 +37,7 @@ namespace allspice.Repositories
         a.*
         FROM recipes r
         JOIN accounts a ON a.id = r.creatorId
-        WHERE a.id = @id
+        WHERE r.id = @id
         ";
       return _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
       {
