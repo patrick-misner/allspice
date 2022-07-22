@@ -85,9 +85,9 @@ namespace allspice.Controllers
     [Authorize]
     public async Task<ActionResult<Recipe>> DeleteAsync(int id)
     {
+      Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
       try
       {
-        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         Recipe deletedRecipe = _rServ.Delete(id, userInfo.Id);
         return Ok(deletedRecipe);
       }

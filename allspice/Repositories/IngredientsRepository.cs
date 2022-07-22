@@ -13,6 +13,16 @@ namespace allspice.Repositories
       _db = db;
     }
 
+
+    internal Ingredient Get(int id)
+    {
+      string sql = @"
+        SELECT *
+        FROM ingredients
+        WHERE id = @id
+        ";
+      return _db.QueryFirstOrDefault<Ingredient>(sql, new { id });
+    }
     internal Ingredient Create(Ingredient ingredientData)
     {
       string sql = @"
@@ -25,5 +35,18 @@ namespace allspice.Repositories
       ingredientData.Id = id;
       return ingredientData;
     }
+
+    internal void Edit(Ingredient original)
+    {
+      string sql = @"
+        UPDATE ingredients
+        SET
+        name = @Name,
+        quantity = @Quantity
+        WHERE id =@Id
+        ";
+      _db.Execute(sql, original);
+    }
+
   }
 }

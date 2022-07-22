@@ -16,17 +16,21 @@ namespace allspice.Services
     }
 
 
-
+    internal Ingredient Get(int id)
+    {
+      Ingredient found = _repo.Get(id);
+      if (found == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return found;
+    }
 
 
 
     internal Ingredient Create(Ingredient ingredientData, string userId)
     {
       Recipe found = _rServ.Get(ingredientData.RecipeId);
-      if (found == null)
-      {
-        throw new Exception("Did not find a valid RecipeId for this ingredient");
-      }
       if (found.CreatorId != userId)
       {
         throw new Exception("You are not the owner of the recipe");
@@ -35,11 +39,33 @@ namespace allspice.Services
       return (ingredientData);
     }
 
-    // internal Ingredient Edit(Ingredient ingredientData)
-    // {
-    //     // Ingredient original = Get(ingredientData.Id);
-    //     original.Name = ingredientData.Name ?? original.Name;
 
-    // }
+
+    internal Ingredient Edit(Ingredient ingredientData, string userId)
+    {
+      Ingredient original = this.Get(ingredientData.Id);
+      Recipe found = _rServ.Get(original.RecipeId);
+      if (found.CreatorId != userId)
+      {
+        throw new Exception("You are not the owner of the recipe");
+      }
+      original.Name = ingredientData.Name ?? original.Name;
+      original.Quantity = ingredientData.Quantity ?? original.Quantity;
+      _repo.Edit(original);
+      return original;
+
+    }
+
+    internal Ingredient Delete(Ingredient ingredientData, string userId)
+    {
+      Recipe found = _rServ.Get(ingredientData.RecipeId);
+      Ingredient original = Get(ingredientData.Id);
+      if (userId != found.CreatorId)
+      {
+        throw new Exception("You do not own the recipe for this ingredient");
+      }
+      _repo.Delete(ingredientData.Id);
+      return original;
+    }
   }
 }

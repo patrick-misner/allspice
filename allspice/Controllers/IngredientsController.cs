@@ -34,16 +34,49 @@ namespace allspice.Controllers
         return BadRequest(e.Message);
       }
     }
-    // [HttpPut("{id}")]
-    // [Authorize]
-    // public async Task<ActionResult<Ingredient>> Edit(int id, [FromBody] Ingredient ingredientData)
-    // {
 
+    [HttpGet("{id}")]
+
+    public ActionResult<Ingredient> Get(int id)
+    {
+      try
+      {
+        Ingredient ingredient = _iServ.Get(id);
+        return Ok(ingredient);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Ingredient>> EditAsync(int id, [FromBody] Ingredient ingredientData)
+    {
+
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        ingredientData.Id = id;
+        Ingredient update = _iServ.Edit(ingredientData, userInfo.Id);
+        return Ok(update);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    // [HttpDelete("{id}")]
+    // [Authorize]
+    // public async Task<ActionResult<Ingredient>> DeleteAsync(int id)
+    // {
+    //   Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
     //   try
     //   {
-    //     Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-    //     ingredientData.Id = id;
-    //     Ingredient update = _iServ.Edit(ingredientData);
+    //     Ingredient deletedIngredient = _iServ.Delete(id, userInfo.Id);
+    //     return Ok(deletedIngredient);
     //   }
     //   catch (Exception e)
     //   {
