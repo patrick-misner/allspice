@@ -35,7 +35,7 @@ namespace allspice.Services
       Recipe original = Get(recipeData.Id);
       if (recipeData.CreatorId != original.CreatorId)
       {
-        throw new Exception("You cannot edit this");
+        throw new Exception("Edit failed. You are not the creator");
       }
       original.Picture = recipeData.Picture ?? original.Picture;
       original.Title = recipeData.Title ?? original.Title;
