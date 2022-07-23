@@ -20,11 +20,14 @@ namespace allspice.Controllers
 
     private readonly StepsService _stServ;
 
-    public RecipesController(RecipesService rServ, IngredientsService iServ, StepsService stServ)
+    private readonly FavoritesService _fServ;
+
+    public RecipesController(RecipesService rServ, IngredientsService iServ, StepsService stServ, FavoritesService fServ)
     {
       _rServ = rServ;
       _iServ = iServ;
       _stServ = stServ;
+      _fServ = fServ;
     }
 
     [HttpGet]
@@ -118,6 +121,25 @@ namespace allspice.Controllers
         return BadRequest(e.Message);
       }
     }
+    [HttpPut("{id}/favorite")]
+    [Authorize]
+
+    public async Task<ActionResult<Favorite>> Create(int id, [FromBody] Favorite favoriteData)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        favoriteData.AccountId = userInfo.Id;
+        favoriteData.RecipeId = id;
+        Favorite newFavorite = _fServ.Create(favoriteData);
+        return Ok(newFavorite);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
     [HttpDelete("{id}")]
     [Authorize]
     public async Task<ActionResult<Recipe>> DeleteAsync(int id)

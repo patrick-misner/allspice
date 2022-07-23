@@ -1,12 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using allspice.Models;
+using allspice.Repositories;
 
 namespace allspice.Services
 {
-    public class FavoritesService
+
+  public class FavoritesService
+  {
+    private readonly FavoritesRepository _repo;
+
+    public FavoritesService(FavoritesRepository repo)
     {
-        
+      _repo = repo;
     }
+
+    internal Favorite Create(Favorite favoriteData)
+    {
+      return _repo.Create(favoriteData);
+    }
+  }
 }
