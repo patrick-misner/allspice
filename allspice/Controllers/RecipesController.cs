@@ -18,10 +18,13 @@ namespace allspice.Controllers
 
     private readonly IngredientsService _iServ;
 
-    public RecipesController(RecipesService rServ, IngredientsService iServ)
+    private readonly StepsService _stServ;
+
+    public RecipesController(RecipesService rServ, IngredientsService iServ, StepsService stServ)
     {
       _rServ = rServ;
       _iServ = iServ;
+      _stServ = stServ;
     }
 
     [HttpGet]
@@ -62,6 +65,20 @@ namespace allspice.Controllers
       catch (Exception e)
       {
 
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("{id}/steps")]
+    public ActionResult<List<Step>> GetSteps(int id)
+    {
+      try
+      {
+        List<Step> steps = _stServ.GetByRecipeId(id);
+        return Ok(steps);
+      }
+      catch (Exception e)
+      {
         return BadRequest(e.Message);
       }
     }
