@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using allspice.Models;
 using allspice.Repositories;
 
@@ -26,7 +27,11 @@ namespace allspice.Services
       return found;
     }
 
-
+    internal List<Ingredient> GetByRecipeId(int recipeId)
+    {
+      List<Ingredient> ingredients = _repo.GetByRecipeId(recipeId);
+      return ingredients;
+    }
 
     internal Ingredient Create(Ingredient ingredientData, string userId)
     {

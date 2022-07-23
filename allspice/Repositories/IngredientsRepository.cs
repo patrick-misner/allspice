@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using allspice.Models;
 using Dapper;
 
@@ -22,6 +24,16 @@ namespace allspice.Repositories
         WHERE id = @id
         ";
       return _db.QueryFirstOrDefault<Ingredient>(sql, new { id });
+    }
+
+    internal List<Ingredient> GetByRecipeId(int id)
+    {
+      string sql = @"
+        SELECT *
+        FROM ingredients
+        WHERE recipeId = @id
+        ";
+      return _db.Query<Ingredient>(sql, new { id }).ToList();
     }
     internal Ingredient Create(Ingredient ingredientData)
     {
