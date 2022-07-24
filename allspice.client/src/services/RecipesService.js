@@ -9,6 +9,8 @@ class RecipesService {
     logger.log(res.data)
     AppState.recipes = res.data
   }
+
+
 }
 
 export const recipesService = new RecipesService()

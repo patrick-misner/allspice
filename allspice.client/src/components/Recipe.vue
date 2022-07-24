@@ -1,7 +1,17 @@
 <template>
   <div class="col-4">
     <div
-      class="bg-grey elevation-2 m-3 card-bg rounded position-relative"
+      @click="triggerModal"
+      class="
+        bg-grey
+        elevation-2
+        m-3
+        card-bg
+        rounded
+        position-relative
+        grow-card
+        selectable
+      "
       :style="`background-image: url(${recipe.picture})`"
     >
       <div class="d-flex justify-content-between">
@@ -9,7 +19,10 @@
           ><b>{{ recipe.category }}</b></span
         >
         <span class="bg-grey text-shadow m-2 rounded p-2 grow card-content"
-          ><b><i class="mdi mdi-heart text-danger selectable grow"></i></b
+          ><b
+            ><i
+              class="mdi mdi-heart-outline text-danger selectable grow"
+            ></i></b
         ></span>
       </div>
       <div class="">
@@ -37,11 +50,19 @@
 
 <script>
 import { computed } from "@vue/runtime-core"
+import { Modal } from "bootstrap"
+import { AppState } from "../AppState"
+import { logger } from "../utils/Logger"
 export default {
   props: { recipe: { type: Object, required: true } },
   setup(props) {
     return {
-      recipes: computed(() => AppState.recipes)
+      recipes: computed(() => AppState.recipes),
+      async triggerModal() {
+        AppState.activeRecipe = props.recipe
+        logger.log(AppState.activeRecipe)
+        Modal.getOrCreateInstance(document.getElementById('active-recipe')).show()
+      }
     }
   }
 
@@ -67,5 +88,12 @@ export default {
 
 .grow:hover {
   transform: scale(1.05);
+}
+.grow-card {
+  transition: all 0.1s ease-in-out;
+}
+
+.grow-card:hover {
+  transform: scale(1.001);
 }
 </style>

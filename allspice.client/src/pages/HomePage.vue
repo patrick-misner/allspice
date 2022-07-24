@@ -11,6 +11,12 @@
   <div class="row">
     <Recipe v-for="r in recipes" :key="r.id" :recipe="r" />
   </div>
+
+  <Modal id="active-recipe">
+    <template #body>
+      <ActiveRecipe />
+    </template>
+  </Modal>
 </template>
 
 <script>
