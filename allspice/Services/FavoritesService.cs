@@ -1,3 +1,4 @@
+using System;
 using allspice.Models;
 using allspice.Repositories;
 
@@ -15,7 +16,30 @@ namespace allspice.Services
 
     internal Favorite Create(Favorite favoriteData)
     {
-      return _repo.Create(favoriteData);
+      Favorite found = this.GetFavorite(favoriteData);
+      if (found != null)
+      {
+        int id = found.Id;
+        this.Delete(id);
+        return found;
+      }
+
+
+      _repo.Create(favoriteData);
+      return (favoriteData);
+    }
+    internal Favorite GetFavorite(Favorite favoriteData)
+    {
+      Favorite found = _repo.GetFavorite(favoriteData);
+      return found;
+    }
+
+    internal Favorite Delete(int id)
+    {
+      Favorite original = new Favorite();
+      original.Id = id;
+      _repo.Delete(original);
+      throw new Exception("Recipe removed from Favorites");
     }
   }
 }

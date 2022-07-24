@@ -86,6 +86,22 @@ namespace allspice.Controllers
       }
     }
 
+    [HttpGet("favorites")]
+    [Authorize]
+    public async Task<ActionResult<List<Recipe>>> GetFavoriteRecipesAsync()
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        List<Recipe> recipes = _rServ.GetFavoriteRecipes(userInfo.Id);
+        return Ok(recipes);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
 
     [HttpPost]
     [Authorize]
@@ -121,14 +137,15 @@ namespace allspice.Controllers
         return BadRequest(e.Message);
       }
     }
-    [HttpPut("{id}/favorite")]
+    [HttpPost("{id}/favorite")]
     [Authorize]
 
-    public async Task<ActionResult<Favorite>> Create(int id, [FromBody] Favorite favoriteData)
+    public async Task<ActionResult<Favorite>> Create(int id)
     {
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        Favorite favoriteData = new Favorite();
         favoriteData.AccountId = userInfo.Id;
         favoriteData.RecipeId = id;
         Favorite newFavorite = _fServ.Create(favoriteData);
