@@ -35,7 +35,7 @@
                 <h3>Recipe Steps</h3>
               </div>
               <ol>
-                <li>Spaceship</li>
+                <li v-for="s in steps" :key="s.id">{{ s.body }}</li>
               </ol>
             </div>
           </div>
@@ -45,8 +45,27 @@
                 <h3>Ingredients</h3>
               </div>
               <ul>
-                <li>ingredient 1</li>
+                <li v-for="i in ingredients" :key="i.id">
+                  {{ i.quantity }} {{ i.name }}
+                </li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div
+              class="
+                d-flex
+                justify-content-end
+                align-items-end
+                h-100
+                position-absolute
+                bottom-0
+              "
+            >
+              published by: {{ recipe.creator.name }}
             </div>
           </div>
         </div>
@@ -58,11 +77,27 @@
 <script>
 import { computed, watchEffect } from "@vue/runtime-core"
 import { AppState } from "../AppState"
+import { recipesService } from "../services/RecipesService"
+import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
 export default {
   setup() {
-    watchEffect(async () => AppState.activeRecipe)
+    watchEffect(async () => {
+      try {
+        AppState.activeRecipe
+        if (AppState.activeRecipe.id) {
+          await recipesService.getIngredients(AppState.activeRecipe.id)
+          await recipesService.getSteps(AppState.activeRecipe.id)
+        }
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error.message, 'error')
+      }
+    })
     return {
-      recipe: computed(() => AppState.activeRecipe)
+      recipe: computed(() => AppState.activeRecipe),
+      ingredients: computed(() => AppState.ingredients),
+      steps: computed(() => AppState.steps)
     }
   }
 }

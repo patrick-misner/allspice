@@ -14,7 +14,7 @@
 
   <Modal id="active-recipe">
     <template #body>
-      <ActiveRecipe />
+      <ActiveRecipe v-if="activeProvider.id" />
     </template>
   </Modal>
 </template>
@@ -37,7 +37,8 @@ export default {
       }
     });
     return {
-      recipes: computed(() => AppState.recipes)
+      recipes: computed(() => AppState.recipes),
+      activeProvider: computed(() => AppState.activeRecipe)
     }
   }
 }
