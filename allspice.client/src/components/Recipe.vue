@@ -21,6 +21,7 @@
         <span class="bg-grey text-shadow m-2 rounded p-2 grow card-content"
           ><b
             ><i
+              @click.stop="favoriteRecipe"
               class="mdi mdi-heart-outline text-danger selectable grow"
             ></i></b
         ></span>
@@ -53,6 +54,8 @@ import { computed } from "@vue/runtime-core"
 import { Modal } from "bootstrap"
 import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
+import { recipesService } from "../services/RecipesService"
+import Pop from "../utils/Pop"
 export default {
   props: { recipe: { type: Object, required: true } },
   setup(props) {
@@ -62,6 +65,14 @@ export default {
         AppState.activeRecipe = props.recipe
         logger.log(AppState.activeRecipe)
         Modal.getOrCreateInstance(document.getElementById('active-recipe')).show()
+      },
+      async favoriteRecipe() {
+        try {
+          await recipesService.favoriteRecipe(props.recipe.id)
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
       }
     }
   }

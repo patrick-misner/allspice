@@ -1,4 +1,3 @@
-using System;
 using allspice.Models;
 using allspice.Repositories;
 
@@ -39,7 +38,7 @@ namespace allspice.Services
       Favorite original = new Favorite();
       original.Id = id;
       _repo.Delete(original);
-      throw new Exception("Recipe removed from Favorites");
+      return original;
     }
   }
 }

@@ -1,0 +1,123 @@
+<template>
+  <div class="d-flex justify-content-between bg-primary text-white">
+    <div class="p-3">
+      <span class="fs-3"> Create Recipe </span>
+    </div>
+
+    <div>
+      <button
+        type="button"
+        class="btn-close btn btn-light bg-light m-3"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+  <form @submit.prevent="postRecipe">
+    <div class="row pt-3">
+      <div class="col-6">
+        <div class="form-floating mb-3">
+          <input
+            v-model="editable.title"
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            placeholder="Title"
+            required
+          />
+          <label for="floatingInput">Title</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            v-model="editable.subtitle"
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            placeholder="Subtitle"
+            required
+          />
+          <label for="floatingInput">Subtitle</label>
+        </div>
+
+        <div class="form-floating">
+          <textarea
+            v-model="editable.description"
+            class="form-control"
+            placeholder="Leave a comment here"
+            id="floatingTextarea2"
+            style="height: 100px"
+            maxlength="75"
+            required
+          ></textarea>
+          <label for="floatingTextarea2"
+            >Brief description of the recipe..</label
+          >
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-floating">
+          <select
+            v-model="editable.category"
+            class="form-select"
+            id="floatingSelect"
+            aria-label="Floating label select example"
+            required
+          >
+            <option value="" selected>Please select...</option>
+            <option value="Beef">Beef</option>
+            <option value="Burgers">Burgers</option>
+            <option value="Fish">Fish</option>
+            <option value="Pork">Pork</option>
+            <option value="Poultry">Poultry</option>
+            <option value="Pasta">Pasta</option>
+          </select>
+          <label for="floatingSelect">Select Category</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-light"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      >
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-secondary">Submit</button>
+    </div>
+  </form>
+</template>
+
+<script>
+import { ref } from "@vue/reactivity"
+import { recipesService } from "../services/RecipesService"
+import { Modal } from "bootstrap"
+import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
+export default {
+  setup() {
+    const editable = ref({})
+    return {
+      editable,
+      async postRecipe() {
+        try {
+          await recipesService.createRecipe(editable.value)
+          Modal.getOrCreateInstance(document.getElementById("recipe-form")).hide()
+          editable.value = ""
+          Pop.toast("recipe created!", "success")
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      }
+    }
+  }
+}
+</script>
+
+<style>
+</style>

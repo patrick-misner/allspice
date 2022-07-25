@@ -20,6 +20,15 @@ class RecipesService {
     AppState.steps = res.data
   }
 
+  async createRecipe(recipeData) {
+    const res = await api.post('/api/recipes', recipeData)
+    AppState.recipes.push(res.data)
+    return res.data
+  }
+
+  async favoriteRecipe(recipeId) {
+    const res = await api.post('api/recipes/' + recipeId + '/favorite')
+  }
 }
 
 export const recipesService = new RecipesService()

@@ -1,7 +1,17 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-4">
-      <div class="d-flex justify-content-around bg-grey elevation-3 p-3 m-3">
+    <div class="col-6 position-relative">
+      <div
+        class="
+          d-flex
+          justify-content-around
+          bg-grey
+          elevation-3
+          p-3
+          m-3
+          home-bar
+        "
+      >
         <div><a href=""></a> Home</div>
         <div>My Recipes</div>
         <div>Favorites</div>
@@ -11,10 +21,22 @@
   <div class="row">
     <Recipe v-for="r in recipes" :key="r.id" :recipe="r" />
   </div>
+  <div
+    @click="createRecipe"
+    class="position-fixed bottom-0 end-0 text-primary add-icon selectable grow"
+  >
+    <i class="mdi mdi-plus-circle" style="font-size: 100px"></i>
+  </div>
 
   <Modal id="active-recipe">
     <template #body>
       <ActiveRecipe v-if="activeProvider.id" />
+    </template>
+  </Modal>
+
+  <Modal id="recipe-form">
+    <template #body>
+      <RecipeForm />
     </template>
   </Modal>
 </template>
@@ -25,6 +47,7 @@ import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
 import { recipesService } from "../services/RecipesService"
 import Pop from "../utils/Pop";
+import { Modal } from "bootstrap";
 export default {
   name: 'Home',
   setup() {
@@ -38,7 +61,10 @@ export default {
     });
     return {
       recipes: computed(() => AppState.recipes),
-      activeProvider: computed(() => AppState.activeRecipe)
+      activeProvider: computed(() => AppState.activeRecipe),
+      createRecipe() {
+        Modal.getOrCreateInstance(document.getElementById('recipe-form')).show()
+      }
     }
   }
 }
@@ -60,6 +86,17 @@ export default {
       object-fit: contain;
       object-position: center;
     }
+  }
+  .grow {
+    transition: all 0.1s ease-in-out;
+  }
+
+  .grow:hover {
+    transform: scale(1.05);
+  }
+  .home-bar {
+    position: absolute;
+    top: 150px;
   }
 }
 </style>
