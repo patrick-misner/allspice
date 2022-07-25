@@ -11,7 +11,7 @@ class IngredientsService {
 
   async createIngredient(ingredientData) {
     const res = await api.post('api/ingredients', ingredientData)
-    AppState.steps.push(res.data)
+    AppState.ingredients.push(res.data)
   }
 }
 

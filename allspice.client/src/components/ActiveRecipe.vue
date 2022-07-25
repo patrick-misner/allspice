@@ -68,6 +68,7 @@
                   class="form-control"
                   id="exampleFormControlInput1"
                   placeholder="Add Step"
+                  required
                 />
                 <div class="text-end m-2">
                   <button type="submit" class="btn btn-primary">Add</button>
@@ -105,8 +106,19 @@
                   type="text"
                   class="form-control"
                   id="exampleFormControlInput1"
-                  placeholder="Add Ingredient"
+                  placeholder="Ingredient name..."
+                  required
                 />
+
+                <input
+                  v-model="ingredientData.quantity"
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="Qty: 2 tbsp..."
+                  required
+                />
+
                 <div class="text-end">
                   <button type="submit" class="btn btn-primary m-2">Add</button>
                 </div>
