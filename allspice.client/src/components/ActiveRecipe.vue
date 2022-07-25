@@ -19,6 +19,14 @@
 
           <div class="">
             <button
+              v-if="account.id == recipe.creatorId"
+              @click="deleteRecipe"
+              type="button"
+              class="btn btn-danger mx-3"
+            >
+              Delete <i class="mdi mdi-trash-can"></i>
+            </button>
+            <button
               type="button"
               class="btn-close btn btn-light bg-light"
               data-bs-dismiss="modal"
@@ -35,9 +43,37 @@
                 <h3>Recipe Steps</h3>
               </div>
               <ol>
-                <li v-for="s in steps" :key="s.id">{{ s.body }}</li>
+                <li v-for="s in steps" :key="s.id" class="py-2">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <span>{{ s.body }}</span>
+                    <i
+                      v-if="account.id == recipe.creatorId"
+                      @click="deleteStep(s.id)"
+                      class="mdi mdi-trash-can text-danger selectable grow"
+                    ></i>
+                  </div>
+                </li>
               </ol>
             </div>
+            <form
+              v-if="account.id == recipe.creatorId"
+              @submit.prevent="addStep"
+            >
+              <div class="mb-3">
+                <input
+                  v-model="stepData.body"
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="Add Step"
+                />
+                <div class="text-end m-2">
+                  <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+              </div>
+            </form>
           </div>
           <div class="col-6">
             <div class="elevation-2 rounded">
@@ -45,29 +81,42 @@
                 <h3>Ingredients</h3>
               </div>
               <ul>
-                <li v-for="i in ingredients" :key="i.id">
-                  {{ i.quantity }} {{ i.name }}
+                <li v-for="i in ingredients" :key="i.id" class="py-2">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <span>{{ i.quantity + " of " }}</span>
+                      <span> {{ i.name }}</span>
+                    </div>
+                    <div>
+                      <i
+                        @click="deleteIngredient(i.id)"
+                        class="mdi mdi-trash-can selectable grow text-danger"
+                      ></i>
+                    </div>
+                  </div>
                 </li>
               </ul>
+            </div>
+
+            <div v-if="account.id == recipe.creatorId" class="mb-3">
+              <form @submit.prevent="addIngredient">
+                <input
+                  v-model="ingredientData.name"
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="Add Ingredient"
+                />
+                <div class="text-end">
+                  <button type="submit" class="btn btn-primary m-2">Add</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-12">
-            <div
-              class="
-                d-flex
-                justify-content-end
-                align-items-end
-                h-100
-                position-absolute
-                bottom-0
-              "
-            >
-              published by: {{ recipe.creator.name }}
-            </div>
-          </div>
+        <div class="d-flex justify-content-end align-items-end published p-3">
+          published by: {{ recipe.creator.name }}
         </div>
       </div>
     </div>
@@ -75,16 +124,26 @@
 </template>
 
 <script>
-import { computed, watchEffect } from "@vue/runtime-core"
+import { computed, ref, watchEffect } from "@vue/runtime-core"
 import { AppState } from "../AppState"
 import { recipesService } from "../services/RecipesService"
+import { stepsService } from "../services/StepsService"
+import { ingredientsService } from "../services/IngredientsService"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
+import { Modal } from "bootstrap"
 export default {
   setup() {
+    const ingredientData = ref({
+      recipeId: AppState.activeRecipe.id
+    });
+    const stepData = ref({
+      recipeId: AppState.activeRecipe.id,
+      position: 1
+    });
     watchEffect(async () => {
       try {
-        AppState.activeRecipe
+        AppState.account
         if (AppState.activeRecipe.id) {
           await recipesService.getIngredients(AppState.activeRecipe.id)
           await recipesService.getSteps(AppState.activeRecipe.id)
@@ -95,9 +154,66 @@ export default {
       }
     })
     return {
+      ingredientData,
+      stepData,
       recipe: computed(() => AppState.activeRecipe),
       ingredients: computed(() => AppState.ingredients),
-      steps: computed(() => AppState.steps)
+      steps: computed(() => AppState.steps),
+      account: computed(() => AppState.account),
+      async deleteRecipe() {
+        try {
+          if (await Pop.confirm('Are you sure you want to delete this recipe?')) {
+            await recipesService.deleteRecipe(this.recipe.id)
+            Modal.getOrCreateInstance(document.getElementById("active-recipe")).hide()
+            Pop.toast('Recipe deleted', 'success')
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+      async deleteStep(stepId) {
+        try {
+          if (await Pop.confirm('Are you sure you want to delete this step?')) {
+            await stepsService.deleteStep(stepId)
+            Pop.toast('Step deleted', 'success')
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+      async deleteIngredient(ingredientId) {
+        try {
+          if (await Pop.confirm('Are you sure you want to delete this ingredient?')) {
+            await ingredientsService.deleteIngredient(ingredientId)
+            Pop.toast('Step deleted', 'success')
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+      async addIngredient() {
+        try {
+          await ingredientsService.createIngredient(ingredientData.value)
+          ingredientData.value = ""
+          Pop.toast("Ingredient Added!", "success")
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+      async addStep() {
+        try {
+          await stepsService.createStep(stepData.value)
+          stepData.value = ""
+          Pop.toast("Step added!", 'success')
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      }
     }
   }
 }
@@ -128,5 +244,10 @@ export default {
 
 .grow-card:hover {
   transform: scale(1.001);
+}
+.published {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 </style>
