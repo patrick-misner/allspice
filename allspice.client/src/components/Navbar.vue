@@ -1,5 +1,8 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <nav
+    class="navbar navbar-expand-lg navbar-dark px-3 header-img"
+    style="background-image: url('../src/assets/img/header.jpeg')"
+  >
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
         <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
@@ -52,5 +55,12 @@ a:hover {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.header-img {
+  height: 125px;
+  min-height: 125px;
+  background-position: 50% 60%;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 </style>

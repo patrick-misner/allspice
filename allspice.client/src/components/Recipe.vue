@@ -15,10 +15,29 @@
       :style="`background-image: url(${recipe.picture})`"
     >
       <div class="d-flex justify-content-between">
-        <span class="bg-grey text-shadow m-2 rounded-pill p-2 card-content"
+        <span
+          class="
+            bg-grey
+            text-shadow
+            elevation-2
+            m-2
+            rounded-pill
+            p-2
+            card-content
+          "
           ><b>{{ recipe.category }}</b></span
         >
-        <span class="bg-grey text-shadow m-2 rounded p-2 grow card-content"
+        <span
+          class="
+            bg-grey
+            text-shadow
+            m-2
+            rounded
+            p-2
+            elevation-2
+            grow
+            card-content
+          "
           ><b
             ><i
               @click.stop="favoriteRecipe"
@@ -31,6 +50,7 @@
           class="
             bg-grey
             text-shadow
+            elevation-2
             rounded
             m-3
             p-3
@@ -39,7 +59,13 @@
           "
         >
           <h4>{{ recipe.title }}</h4>
-          <h5>{{ recipe.subtitle }}</h5>
+          <span
+            >{{
+              recipe.subtitle
+            }}
+            lsdkfjasl;kfjsad;lfkjasf;lkasjdf;laskjdfsad;lkjfdsak lfjas;lkfj
+            sfl;ksaflkjsldkfjasl;fkdjdaslfk;jasl;dfkjasldfkjasld;fkjasfl;kasjfl;kjsaflsa</span
+          >
         </div>
       </div>
     </div>

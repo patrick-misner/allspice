@@ -1,20 +1,26 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-6 position-relative">
-      <div
-        class="
-          d-flex
-          justify-content-around
-          bg-grey
-          elevation-3
-          p-3
-          m-3
-          home-bar
-        "
-      >
-        <div><a href=""></a> Home</div>
-        <div>My Recipes</div>
-        <div>Favorites</div>
+    <div class="col-6">
+      <div class="position-relative">
+        <div class="">
+          <div
+            class="
+              d-flex
+              rounded
+              text-primary
+              justify-content-around
+              bg-light
+              elevation-3
+              p-3
+              m-3
+              home-bar
+            "
+          >
+            <div><a href=""></a> Home</div>
+            <div>My Recipes</div>
+            <div>Favorites</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
