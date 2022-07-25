@@ -26,18 +26,15 @@
             ></i></b
         ></span>
       </div>
-      <div class="">
+      <div class="position-absolute bottom-0 w-100">
         <div
           class="
             bg-grey
             text-shadow
             rounded
-            m-2
-            p-2
+            m-3
+            p-3
             card-content
-            w-100
-            position-absolute
-            bottom-0
             border-5 border-dark
           "
         >
@@ -91,7 +88,7 @@ export default {
 }
 
 .card-content {
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(2px);
 }
 .grow {
   transition: all 0.1s ease-in-out;
