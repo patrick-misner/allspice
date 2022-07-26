@@ -1,6 +1,6 @@
 <template>
   <div
-    class="modal fade"
+    class="modal fade modal-open"
     tabindex="-1"
     role="dialog"
     aria-labelledby="modelTitleId"
@@ -22,7 +22,7 @@
             aria-label="Close"
           ></button>
         </div> -->
-        <div class="modal-body">
+        <div class="modal-body p-0">
           <slot name="body">
             <!--  -->
             <!--  -->
@@ -41,4 +41,7 @@ export default {
 </script>
 
 <style>
+.modal-open {
+  padding-right: 0 !important;
+}
 </style>

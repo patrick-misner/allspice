@@ -1,39 +1,33 @@
 <template>
-  <nav
-    class="navbar navbar-expand-lg navbar-dark px-3 header-img"
-    style="background-image: url('../src/assets/img/header.jpeg')"
-  >
-    <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
-      </div>
-    </router-link>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon" />
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto">
-        <li>
-          <router-link
-            :to="{ name: 'About' }"
-            class="btn text-success lighten-30 selectable text-uppercase"
+  <div class="header-img d-flex justify-content-end">
+    <div>
+      <div class="input-group pt-3">
+        <input
+          class="form-control border-end-0 border"
+          type="search"
+          value="search"
+          id="example-search-input"
+        />
+        <span class="input-group-append">
+          <button
+            class="
+              btn btn-outline-secondary
+              bg-white
+              border-start-0 border-bottom-0 border
+              ms-n5
+            "
+            type="button"
           >
-            About
-          </router-link>
-        </li>
-      </ul>
-      <!-- LOGIN COMPONENT HERE -->
+            <i class="mdi mdi-magnify"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <div class="p-3">
       <Login />
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -62,5 +56,6 @@ a:hover {
   background-position: 50% 60%;
   background-size: cover;
   background-repeat: no-repeat;
+  background-image: url("../src/assets/img/header.jpeg");
 }
 </style>

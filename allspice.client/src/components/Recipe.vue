@@ -1,5 +1,5 @@
 <template>
-  <div class="col-4">
+  <div class="col-md-4">
     <div
       @click="triggerModal"
       class="
@@ -59,13 +59,7 @@
           "
         >
           <h4>{{ recipe.title }}</h4>
-          <span
-            >{{
-              recipe.subtitle
-            }}
-            lsdkfjasl;kfjsad;lfkjasf;lkasjdf;laskjdfsad;lkjfdsak lfjas;lkfj
-            sfl;ksaflkjsldkfjasl;fkdjdaslfk;jasl;dfkjasldfkjasld;fkjasfl;kasjfl;kjsaflsa</span
-          >
+          <span>{{ recipe.subtitle }} </span>
         </div>
       </div>
     </div>

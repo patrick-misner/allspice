@@ -1,7 +1,7 @@
 <template>
-  <div class="d-flex justify-content-between bg-primary text-white">
-    <div class="p-3">
-      <span class="fs-3"> Create Recipe </span>
+  <div class="d-flex justify-content-between bg-primary text-white p-2">
+    <div class="">
+      <span class="fs-3 p-3"> Create Recipe </span>
     </div>
 
     <div>
@@ -14,7 +14,7 @@
     </div>
   </div>
   <form @submit.prevent="postRecipe">
-    <div class="row pt-3">
+    <div class="row pt-3 p-3">
       <div class="col-6">
         <div class="form-floating mb-3">
           <input
@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end p-3">
       <button
         type="button"
         class="btn btn-light"
@@ -87,7 +87,7 @@
       >
         Cancel
       </button>
-      <button type="submit" class="btn btn-secondary">Submit</button>
+      <button type="submit" class="btn btn-secondary mx-3">Submit</button>
     </div>
   </form>
 </template>

@@ -8,7 +8,7 @@
       Login
     </button>
 
-    <div class="dropdown my-2 my-lg-0" v-else>
+    <div class="dropdown my-lg-0" v-else>
       <div
         class="dropdown-toggle selectable"
         data-bs-toggle="dropdown"
@@ -20,9 +20,8 @@
             :src="account.picture"
             alt="account photo"
             height="40"
-            class="rounded"
+            class="profile-img"
           />
-          <span class="mx-3 text-success lighten-30">{{ account.name }}</span>
         </div>
       </div>
       <div
@@ -80,5 +79,8 @@ export default {
 }
 .hoverable {
   cursor: pointer;
+}
+.profile-img {
+  border-radius: 50%;
 }
 </style>
