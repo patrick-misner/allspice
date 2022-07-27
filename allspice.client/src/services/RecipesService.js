@@ -6,7 +6,10 @@ class RecipesService {
 
   async getRecipes() {
     const res = await api.get('api/recipes')
-    logger.log(res.data)
+    let recipes = res.data
+    recipes.forEach(r => {
+      r.isFavorite = false
+    });
     AppState.recipes = res.data
   }
 
@@ -28,6 +31,8 @@ class RecipesService {
 
   async favoriteRecipe(recipeId) {
     const res = await api.post('api/recipes/' + recipeId + '/favorite')
+    let recipe = AppState.recipes.find(r => r.id == recipeId)
+    recipe.isFavorite = !recipe.isFavorite
   }
 
   async deleteRecipe(recipeId) {

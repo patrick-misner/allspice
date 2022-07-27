@@ -44,12 +44,13 @@
 </template>
 
 <script>
-import { computed, onMounted } from "@vue/runtime-core";
+import { computed, onMounted, watchEffect } from "@vue/runtime-core";
 import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
 import { recipesService } from "../services/RecipesService"
 import Pop from "../utils/Pop";
 import { Modal } from "bootstrap";
+import { accountService } from "../services/AccountService";
 export default {
   name: 'Home',
   setup() {
@@ -61,9 +62,21 @@ export default {
         Pop.toast(error.message, 'error')
       }
     });
+    watchEffect(async () => {
+      try {
+        if (AppState.account.id)
+          await accountService.getFavorites()
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error.message, 'error')
+      }
+    });
+
     return {
       recipes: computed(() => AppState.recipes),
       activeProvider: computed(() => AppState.activeRecipe),
+      account: computed(() => AppState.account),
+      favorites: computed(() => AppState.favorites),
       createRecipe() {
         Modal.getOrCreateInstance(document.getElementById('recipe-form')).show()
       }

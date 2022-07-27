@@ -38,11 +38,18 @@
             grow
             card-content
           "
-          ><b
-            ><i
+          ><b>
+            <i
+              v-if="recipe.isFavorite"
+              @click.stop="favoriteRecipe"
+              class="mdi mdi-heart text-danger selectable grow"
+            ></i>
+
+            <i
+              v-else
               @click.stop="favoriteRecipe"
               class="mdi mdi-heart-outline text-danger selectable grow"
-            ></i></b
+            ></i> </b
         ></span>
       </div>
       <div class="position-absolute bottom-0 w-100">
@@ -86,6 +93,10 @@ export default {
       async favoriteRecipe() {
         try {
           await recipesService.favoriteRecipe(props.recipe.id)
+          if (props.recipe.isFavorite) {
+            Pop.toast("Recipe added to favorites", 'success')
+          }
+          else Pop.toast('Recipe removed from favorites', 'success')
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')

@@ -2,13 +2,13 @@
   <div class="container-fluid">
     <div class="row">
       <div
-        class="col-4 modal-col1 text-end"
+        class="col-lg-4 modal-col1 text-end"
         :style="`background-image: url(${recipe.picture})`"
       >
         <i class="text-danger fs-1 mdi mdi-heart-outline bg-grey rounded"></i>
       </div>
 
-      <div class="col-8 pt-3 p-3">
+      <div class="col-lg-8 pt-3 p-3">
         <div class="d-flex justify-content-between align-items-center">
           <div>
             <span class="text-secondary fs-3">{{ recipe.title }}</span>
@@ -37,9 +37,9 @@
         <span class="text-grey fs-4"> {{ recipe.subtitle }}</span>
 
         <div class="row pt-5">
-          <div class="col-6">
+          <div class="col-lg-6">
             <div class="elevation-2 rounded">
-              <div class="text-center bg-primary rounded">
+              <div class="text-center bg-primary rounded-top">
                 <h3>Recipe Steps</h3>
               </div>
               <ol>
@@ -76,9 +76,9 @@
               </div>
             </form>
           </div>
-          <div class="col-6">
+          <div class="col-lg-6">
             <div class="elevation-2 rounded">
-              <div class="text-center bg-primary rounded">
+              <div class="text-center bg-primary rounded-top">
                 <h3>Ingredients</h3>
               </div>
               <ul>
@@ -233,11 +233,20 @@ export default {
 
 <style>
 .modal-col1 {
-  height: 550px;
-  min-height: 550px;
+  height: 250px;
+  min-height: 250px;
   background-position: 50% 60%;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+@media (min-width: 992px) {
+  .modal-col1 {
+    min-height: 550px;
+    background-position: 50% 60%;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 }
 
 .card-content {
