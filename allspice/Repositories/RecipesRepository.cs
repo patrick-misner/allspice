@@ -72,22 +72,25 @@ namespace allspice.Repositories
       _db.Execute(sql, original);
     }
 
-    internal List<Recipe> GetFavoriteRecipes(string id)
+    internal List<RecipeFavoriteViewModel> GetFavoritesByAccount(string userId)
     {
       string sql = @"
-        SELECT
-        r.*,
-        a.*
-        FROM recipes r
-        WHERE r.creatorId = @id
-        JOIN accounts a ON a.id = r.creatorId
+      SELECT
+      a.*,
+      r.*,
+      f.id As FavoriteId
+      FROM favorites f
+      JOIN recipes r ON r.id = f.recipeId
+      JOIN accounts a ON a.id = r.creatorId
+      WHERE f.accountId = @userId;
       ";
-      return _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
+      return _db.Query<Account, RecipeFavoriteViewModel, RecipeFavoriteViewModel>(sql, (prof, recipe) =>
       {
-        recipe.Creator = profile;
+        recipe.Creator = prof;
         return recipe;
-      }).ToList();
+      }, new { userId }).ToList();
     }
+
 
     internal void Delete(int id)
     {

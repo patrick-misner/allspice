@@ -57,9 +57,11 @@ namespace allspice.Services
       return original;
     }
 
-    internal List<Recipe> GetFavoriteRecipes(string id)
+    internal List<RecipeFavoriteViewModel> GetFavoritesByAccount(string userId)
     {
-      return _repo.GetFavoriteRecipes(id);
+      return _repo.GetFavoritesByAccount(userId);
     }
+
+
   }
 }

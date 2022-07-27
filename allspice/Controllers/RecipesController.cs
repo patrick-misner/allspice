@@ -86,23 +86,6 @@ namespace allspice.Controllers
       }
     }
 
-    [HttpGet("favorites")]
-    [Authorize]
-    public async Task<ActionResult<List<Recipe>>> GetFavoriteRecipesAsync()
-    {
-      try
-      {
-        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        List<Recipe> recipes = _rServ.GetFavoriteRecipes(userInfo.Id);
-        return Ok(recipes);
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
-
-
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<Recipe>> Create([FromBody] Recipe recipeData)
