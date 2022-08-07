@@ -79,10 +79,10 @@ CREATE TABLE
         FOREIGN KEY (patientId) REFERENCES patients(id)
     ) default charset utf8;
 
-SELECT
-    dp.id AS doctorpatientId,
-    p.id AS patientId,
-    p.name AS patientName
-FROM patients p
-    JOIN doctorpatient dp ON p.id = dp.patientId
-WHERE dp.doctorId = 3
+/* SELECT
+ dp.id AS doctorpatientId,
+ p.id AS patientId,
+ p.name AS patientName
+ FROM patients p
+ JOIN doctorpatient dp ON p.id = dp.patientId
+ WHERE dp.doctorId = 3 */
