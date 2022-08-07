@@ -53,3 +53,36 @@ CREATE TABLE
         FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE,
         FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE CASCADE
     ) default charset utf8;
+
+CREATE TABLE
+    IF NOT EXISTS doctors (
+        id INT NOT NULL AUTO_INCREMENT,
+        name VARCHAR(255),
+        -- CODE OMITTED
+        PRIMARY KEY (id)
+    ) default charset utf8;
+
+CREATE TABLE
+    IF NOT EXISTS patients (
+        id INT NOT NULL AUTO_INCREMENT,
+        name VARCHAR(255),
+        -- CODE OMITTED
+        PRIMARY KEY (id)
+    ) default charset utf8;
+
+CREATE TABLE
+    IF NOT EXISTS doctorpatient (
+        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        doctorId INT NOT NULL,
+        patientId INT NOT NULL,
+        FOREIGN KEY (doctorId) REFERENCES doctors(id),
+        FOREIGN KEY (patientId) REFERENCES patients(id)
+    ) default charset utf8;
+
+SELECT
+    dp.id AS doctorpatientId,
+    p.id AS patientId,
+    p.name AS patientName
+FROM patients p
+    JOIN doctorpatient dp ON p.id = dp.patientId
+WHERE dp.doctorId = 3
