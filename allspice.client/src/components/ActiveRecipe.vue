@@ -209,7 +209,9 @@ export default {
       async addIngredient() {
         try {
           await ingredientsService.createIngredient(ingredientData.value)
-          ingredientData.value = ""
+          const ingredientData = ref({
+            recipeId: AppState.activeRecipe.id
+          });
           Pop.toast("Ingredient Added!", "success")
         } catch (error) {
           logger.error(error)
@@ -219,7 +221,10 @@ export default {
       async addStep() {
         try {
           await stepsService.createStep(stepData.value)
-          stepData.value = ""
+          stepData.value = ref({
+            recipeId: AppState.activeRecipe.id,
+            position: 1
+          });
           Pop.toast("Step added!", 'success')
         } catch (error) {
           logger.error(error)
