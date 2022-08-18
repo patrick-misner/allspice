@@ -56,6 +56,6 @@ a:hover {
   background-position: 50% 60%;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("../src/assets/img/header.jpeg");
+  background-image: url("../assets/img/header.jpeg");
 }
 </style>
