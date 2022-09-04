@@ -13,9 +13,13 @@
           m-3
         "
       >
-        <a href="">Home</a>
-        <a href=""> My Recipes</a>
-        <a href="">Favorites</a>
+        <span class="selectable" @click="recipeView = ''">Home</span>
+        <span class="selectable" @click="recipeView = 'myRecipes'" href="">
+          My Recipes</span
+        >
+        <span class="selectable" @click="recipeView = 'Favorites'"
+          >Favorites</span
+        >
       </div>
     </div>
   </div>
@@ -44,7 +48,7 @@
 </template>
 
 <script>
-import { computed, onMounted, watchEffect } from "@vue/runtime-core";
+import { computed, onMounted, ref, watchEffect } from "@vue/runtime-core";
 import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
 import { recipesService } from "../services/RecipesService"
@@ -54,6 +58,7 @@ import { accountService } from "../services/AccountService";
 export default {
   name: 'Home',
   setup() {
+    const recipeView = ref('');
     onMounted(async () => {
       try {
         await recipesService.getRecipes()
@@ -71,15 +76,28 @@ export default {
         Pop.toast(error.message, 'error')
       }
     });
+    function filterRecipe(rview) {
+      if (rview == false) {
+        return r => true
+      }
+      if (rview == 'Favorites') {
+        return r => r.isFavorite == true
+      }
+      if (rview == 'myRecipes') {
+        return r => r.creatorId == AppState.account.id
+      }
+    }
 
     return {
-      recipes: computed(() => AppState.recipes),
+      recipeView,
+      filterRecipe,
+      recipes: computed(() => AppState.recipes.filter(filterRecipe(recipeView.value))),
       activeProvider: computed(() => AppState.activeRecipe),
       account: computed(() => AppState.account),
       favorites: computed(() => AppState.favorites),
       createRecipe() {
         Modal.getOrCreateInstance(document.getElementById('recipe-form')).show()
-      }
+      },
     }
   }
 }

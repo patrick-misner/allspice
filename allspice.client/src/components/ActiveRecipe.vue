@@ -90,6 +90,7 @@
                     </div>
                     <div>
                       <i
+                        v-if="account.id == recipe.creatorId"
                         @click="deleteIngredient(i.id)"
                         class="mdi mdi-trash-can selectable grow text-danger"
                       ></i>
