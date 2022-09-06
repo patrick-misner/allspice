@@ -15,7 +15,7 @@
   </div>
   <form @submit.prevent="postRecipe">
     <div class="row pt-3 p-3">
-      <div class="col-6">
+      <div class="col-lg-6">
         <div class="form-floating mb-3">
           <input
             v-model="editable.title"
@@ -43,7 +43,7 @@
         <div class="form-floating">
           <textarea
             v-model="editable.description"
-            class="form-control"
+            class="form-control mb-3"
             placeholder="Leave a comment here"
             id="floatingTextarea2"
             style="height: 100px"
@@ -56,24 +56,35 @@
         </div>
       </div>
 
-      <div class="col-6">
+      <div class="col-lg-6">
         <div class="form-floating">
           <select
             v-model="editable.category"
-            class="form-select"
+            class="form-select mb-3"
             id="floatingSelect"
             aria-label="Floating label select example"
             required
           >
             <option value="" selected>Please select...</option>
-            <option value="Beef">Beef</option>
-            <option value="Burgers">Burgers</option>
-            <option value="Fish">Fish</option>
-            <option value="Pork">Pork</option>
-            <option value="Poultry">Poultry</option>
-            <option value="Pasta">Pasta</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Salad">Salad</option>
+            <option value="Sides">Sides</option>
+            <option value="Appetizer">Appetizer</option>
           </select>
           <label for="floatingSelect">Select Category</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input
+            v-model="editable.picture"
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            placeholder="img URL"
+          />
+          <label for="floatingInput">Image URL</label>
         </div>
       </div>
     </div>
@@ -107,7 +118,7 @@ export default {
         try {
           await recipesService.createRecipe(editable.value)
           Modal.getOrCreateInstance(document.getElementById("recipe-form")).hide()
-          editable.value = ""
+          editable.value = {}
           Pop.toast("recipe created!", "success")
         } catch (error) {
           logger.error(error)

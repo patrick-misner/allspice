@@ -36,36 +36,46 @@
         </div>
         <span class="text-grey fs-4"> {{ recipe.subtitle }}</span>
 
+        <!-- NOTE STEPS -->
         <div class="row pt-5">
           <div class="col-lg-6">
-            <div class="text-center bg-primary rounded-top">
-              <h3>Recipe Steps</h3>
+            <div class="elevation-2 rounded">
+              <div class="text-center bg-primary rounded-top">
+                <h3>Recipe Steps</h3>
+              </div>
+              <ol>
+                <li v-for="s in steps" :key="s.id" class="py-2">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <span>{{ s.body }}</span>
+                    <i
+                      v-if="account.id == recipe.creatorId"
+                      @click="deleteStep(s.id)"
+                      class="mdi mdi-trash-can text-danger selectable grow"
+                    ></i>
+                  </div>
+                </li>
+              </ol>
             </div>
-            <draggable
-              class="dragArea list-group"
-              :list="list1"
-              :group="{ body: 'people', pull: 'clone', put: false }"
-              @change="log"
-              item-key="body"
+            <form
+              v-if="account.id == recipe.creatorId"
+              @submit.prevent="addStep"
             >
-              <template #item="{ element }">
-                <div
-                  class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    selectable
-                  "
-                >
-                  <div>
-                    {{ element.body }}
-                  </div>
-                  <div>
-                    <i class="mdi mdi-drag-horizontal-variant"></i>
-                  </div>
+              <div class="mb-3">
+                <input
+                  v-model="stepData.body"
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="Add Step"
+                  required
+                />
+                <div class="text-end m-2">
+                  <button type="submit" class="btn btn-primary">Add</button>
                 </div>
-              </template>
-            </draggable>
+              </div>
+            </form>
           </div>
           <div class="col-lg-6">
             <div class="elevation-2 rounded">
@@ -136,24 +146,7 @@ import { ingredientsService } from "../services/IngredientsService"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { Modal } from "bootstrap"
-import draggable from 'vuedraggable'
 export default {
-  name: "clone",
-  display: "Clone",
-  order: 2,
-  components: {
-    draggable
-  },
-  data() {
-    return {
-      list1: computed(() => AppState.steps),
-    };
-  },
-  methods: {
-    log: function (evt) {
-      window.console.log(evt);
-    }
-  },
   setup() {
     const ingredientData = ref({
       recipeId: AppState.activeRecipe.id
@@ -179,8 +172,8 @@ export default {
       stepData,
       recipe: computed(() => AppState.activeRecipe),
       ingredients: computed(() => AppState.ingredients),
-      account: computed(() => AppState.account),
       steps: computed(() => AppState.steps),
+      account: computed(() => AppState.account),
       async deleteRecipe() {
         try {
           if (await Pop.confirm('Are you sure you want to delete this recipe?')) {

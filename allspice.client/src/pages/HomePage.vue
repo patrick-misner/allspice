@@ -11,16 +11,63 @@
           elevation-3
           p-3
           m-3
+          align-items-center
         "
       >
-        <a href="">Home</a>
-        <a href=""> My Recipes</a>
-        <a href="">Favorites</a>
+        <span
+          :class="[
+            recipeView
+              ? 'selectable p-2'
+              : 'selectable bg-primary rounded p-2 elevation-2',
+          ]"
+          @click="recipeView = ''"
+          >Home</span
+        >
+        <span
+          :class="[
+            recipeView == 'myRecipes'
+              ? 'selectable bg-primary rounded p-2 elevation-2'
+              : 'selectable p-2',
+          ]"
+          @click="recipeView = 'myRecipes'"
+          href=""
+        >
+          My Recipes</span
+        >
+        <span
+          :class="[
+            recipeView == 'Favorites'
+              ? 'selectable bg-primary rounded p-2 elevation-2'
+              : 'selectable p-2',
+          ]"
+          @click="recipeView = 'Favorites'"
+          >Favorites</span
+        >
       </div>
     </div>
   </div>
   <div class="row">
     <Recipe v-for="r in recipes" :key="r.id" :recipe="r" />
+    <div v-if="recipes.length < 1" class="col-12">
+      <div class="d-flex justify-content-center">
+        <span v-if="recipeView == 'Favorites' && account.id" class="text-muted"
+          >You have not added any recipes to your favorites
+        </span>
+
+        <span v-if="recipeView == 'myRecipes' && account.id" class="text-muted"
+          >You have not added any recipes. <a href=""></a>
+        </span>
+
+        <div v-if="!account.id" class="">
+          <span class="text-muted"
+            >You must be signed in to view your recipes or favorites.
+          </span>
+          <div class="text-center mt-3">
+            <button @click="login" class="btn btn-primary">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="position-fixed bottom-0 end-0 text-primary add-icon grow">
     <i
@@ -44,16 +91,18 @@
 </template>
 
 <script>
-import { computed, onMounted, watchEffect } from "@vue/runtime-core";
+import { computed, onMounted, ref, watchEffect } from "@vue/runtime-core";
 import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
 import { recipesService } from "../services/RecipesService"
 import Pop from "../utils/Pop";
 import { Modal } from "bootstrap";
 import { accountService } from "../services/AccountService";
+import { AuthService } from "../services/AuthService";
 export default {
   name: 'Home',
   setup() {
+    const recipeView = ref('');
     onMounted(async () => {
       try {
         await recipesService.getRecipes()
@@ -71,15 +120,31 @@ export default {
         Pop.toast(error.message, 'error')
       }
     });
+    function filterRecipe(rview) {
+      if (rview == false) {
+        return r => true
+      }
+      if (rview == 'Favorites') {
+        return r => r.isFavorite == true
+      }
+      if (rview == 'myRecipes') {
+        return r => r.creatorId == AppState.account.id
+      }
+    }
 
     return {
-      recipes: computed(() => AppState.recipes),
+      recipeView,
+      filterRecipe,
+      recipes: computed(() => AppState.recipes.filter(filterRecipe(recipeView.value))),
       activeProvider: computed(() => AppState.activeRecipe),
       account: computed(() => AppState.account),
       favorites: computed(() => AppState.favorites),
       createRecipe() {
         Modal.getOrCreateInstance(document.getElementById('recipe-form')).show()
-      }
+      },
+      async login() {
+        AuthService.loginWithPopup();
+      },
     }
   }
 }
