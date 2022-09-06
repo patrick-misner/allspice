@@ -11,13 +11,36 @@
           elevation-3
           p-3
           m-3
+          align-items-center
         "
       >
-        <span class="selectable" @click="recipeView = ''">Home</span>
-        <span class="selectable" @click="recipeView = 'myRecipes'" href="">
+        <span
+          :class="[
+            recipeView
+              ? 'selectable p-2'
+              : 'selectable bg-primary rounded p-2 elevation-2',
+          ]"
+          @click="recipeView = ''"
+          >Home</span
+        >
+        <span
+          :class="[
+            recipeView == 'myRecipes'
+              ? 'selectable bg-primary rounded p-2 elevation-2'
+              : 'selectable p-2',
+          ]"
+          @click="recipeView = 'myRecipes'"
+          href=""
+        >
           My Recipes</span
         >
-        <span class="selectable" @click="recipeView = 'Favorites'"
+        <span
+          :class="[
+            recipeView == 'Favorites'
+              ? 'selectable bg-primary rounded p-2 elevation-2'
+              : 'selectable p-2',
+          ]"
+          @click="recipeView = 'Favorites'"
           >Favorites</span
         >
       </div>
@@ -25,6 +48,26 @@
   </div>
   <div class="row">
     <Recipe v-for="r in recipes" :key="r.id" :recipe="r" />
+    <div v-if="recipes.length < 1" class="col-12">
+      <div class="d-flex justify-content-center">
+        <span v-if="recipeView == 'Favorites' && account.id" class="text-muted"
+          >You have not added any recipes to your favorites
+        </span>
+
+        <span v-if="recipeView == 'myRecipes' && account.id" class="text-muted"
+          >You have not added any recipes. <a href=""></a>
+        </span>
+
+        <div v-if="!account.id" class="">
+          <span class="text-muted"
+            >You must be signed in to view your recipes or favorites.
+          </span>
+          <div class="text-center mt-3">
+            <button @click="login" class="btn btn-primary">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="position-fixed bottom-0 end-0 text-primary add-icon grow">
     <i
@@ -55,6 +98,7 @@ import { recipesService } from "../services/RecipesService"
 import Pop from "../utils/Pop";
 import { Modal } from "bootstrap";
 import { accountService } from "../services/AccountService";
+import { AuthService } from "../services/AuthService";
 export default {
   name: 'Home',
   setup() {
@@ -97,6 +141,9 @@ export default {
       favorites: computed(() => AppState.favorites),
       createRecipe() {
         Modal.getOrCreateInstance(document.getElementById('recipe-form')).show()
+      },
+      async login() {
+        AuthService.loginWithPopup();
       },
     }
   }

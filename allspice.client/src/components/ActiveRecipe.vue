@@ -210,7 +210,8 @@ export default {
       async addIngredient() {
         try {
           await ingredientsService.createIngredient(ingredientData.value)
-          Object.assign(form, ingredientData);
+          ingredientData.value.name = ''
+          ingredientData.value.quantity = ''
           Pop.toast("Ingredient Added!", "success")
         } catch (error) {
           logger.error(error)
@@ -220,7 +221,7 @@ export default {
       async addStep() {
         try {
           await stepsService.createStep(stepData.value)
-          Object.assign(form, stepData);
+          stepData.value.body = ''
           Pop.toast("Step added!", 'success')
         } catch (error) {
           logger.error(error)
