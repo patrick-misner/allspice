@@ -21,6 +21,11 @@ class RecipesService {
   async getSteps(recipeId) {
     const res = await api.get('api/recipes/' + recipeId + '/steps')
     AppState.steps = res.data
+    let steps = AppState.steps
+    for (let i = 0; i < steps.length; i++) {
+      const step = steps[i];
+      step.position = i + 1
+    }
   }
 
   async createRecipe(recipeData) {

@@ -38,14 +38,14 @@
 
         <div class="row pt-5">
           <div class="col-lg-6">
-            <div class="text-center bg-primary rounded-top">
+            <div class="text-center bg-primary rounded">
               <h3>Recipe Steps</h3>
             </div>
             <draggable
               class="dragArea list-group"
               :list="list1"
-              :group="{ body: 'people', pull: 'clone', put: false }"
-              @change="log"
+              @change="sortSteps()"
+              :disabled="account.id !== recipe.creatorId"
               item-key="body"
             >
               <template #item="{ element }">
@@ -53,23 +53,55 @@
                   class="
                     list-group-item
                     d-flex
+                    align-items-center
                     justify-content-between
-                    selectable
                   "
                 >
-                  <div>
-                    {{ element.body }}
+                  <div class="">
+                    <i
+                      v-if="account.id == recipe.creatorId"
+                      class="mdi mdi-reorder-horizontal fs-5 me-2"
+                    >
+                    </i>
+                    <B>{{ "Step " + element.position + ": " }}</B
+                    >{{ element.body }}
                   </div>
-                  <div>
-                    <i class="mdi mdi-drag-horizontal-variant"></i>
-                  </div>
+                  <i
+                    v-if="account.id == recipe.creatorId"
+                    @click="deleteStep({ element })"
+                    class="
+                      mdi mdi-trash-can
+                      text-danger
+                      selectable
+                      grow
+                      text-end
+                    "
+                  ></i>
                 </div>
               </template>
             </draggable>
+            <form
+              v-if="account.id == recipe.creatorId"
+              @submit.prevent="addStep"
+            >
+              <div class="my-3">
+                <input
+                  v-model="stepData.body"
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="Add Step"
+                  required
+                />
+                <div class="text-end m-2">
+                  <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+              </div>
+            </form>
           </div>
           <div class="col-lg-6">
             <div class="elevation-2 rounded">
-              <div class="text-center bg-primary rounded-top">
+              <div class="text-center bg-primary rounded">
                 <h3>Ingredients</h3>
               </div>
               <ul>
@@ -138,14 +170,12 @@ import Pop from "../utils/Pop"
 import { Modal } from "bootstrap"
 import draggable from 'vuedraggable'
 export default {
-  name: "clone",
-  display: "Clone",
-  order: 2,
   components: {
     draggable
   },
   data() {
     return {
+      enabled: true,
       list1: computed(() => AppState.steps),
     };
   },
@@ -195,8 +225,10 @@ export default {
       },
       async deleteStep(stepId) {
         try {
+          logger.log('delete step', stepId.element.id)
           if (await Pop.confirm('Are you sure you want to delete this step?')) {
-            await stepsService.deleteStep(stepId)
+            await stepsService.deleteStep(stepId.element.id)
+            this.sortSteps()
             Pop.toast('Step deleted', 'success')
           }
         } catch (error) {
@@ -228,9 +260,34 @@ export default {
       },
       async addStep() {
         try {
+          let lastStep = this.steps[this.steps.length - 1]
+          stepData.value.position = lastStep.position + 1
           await stepsService.createStep(stepData.value)
           stepData.value.body = ''
           Pop.toast("Step added!", 'success')
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+      async updateStep(step) {
+        try {
+          await stepsService.updateStep(step)
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+      async sortSteps() {
+        try {
+          logger.log('sort steps ran')
+          let steps = AppState.steps
+          for (let i = 0; i < steps.length; i++) {
+            const step = steps[i];
+            step.position = i + 1
+            this.updateStep(step)
+          }
+          Pop.toast("Steps updated!", 'success')
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
