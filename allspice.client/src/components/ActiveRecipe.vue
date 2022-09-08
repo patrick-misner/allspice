@@ -260,11 +260,11 @@ export default {
       },
       async addStep() {
         try {
+          stepData.value.position = 1
           if (this.steps.length > 0) {
             let lastStep = this.steps[this.steps.length - 1]
             stepData.value.position = lastStep.position + 1
           }
-
           await stepsService.createStep(stepData.value)
           stepData.value.body = ''
           Pop.toast("Step added!", 'success')
