@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex justify-content-between bg-primary text-white p-2">
+  <div
+    class="d-flex justify-content-between bg-primary text-white p-2 rounded-top"
+  >
     <div class="">
       <span class="fs-3 p-3"> Create Recipe </span>
     </div>

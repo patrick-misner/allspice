@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div
-        class="col-lg-4 modal-col1 text-end"
+        class="col-lg-4 modal-col1 text-end modal-round"
         :style="`background-image: url(${recipe.picture})`"
       >
         <i class="text-danger fs-1 mdi mdi-heart-outline bg-grey rounded"></i>
@@ -69,13 +69,7 @@
                   <i
                     v-if="account.id == recipe.creatorId"
                     @click="deleteStep({ element })"
-                    class="
-                      mdi mdi-trash-can
-                      text-danger
-                      selectable
-                      grow
-                      text-end
-                    "
+                    class="mdi mdi-close text-danger selectable grow text-end"
                   ></i>
                 </div>
               </template>
@@ -310,12 +304,19 @@ export default {
   background-repeat: no-repeat;
 }
 
+.modal-round {
+  border-radius: 5px 5px 0px 0px;
+}
+
 @media (min-width: 992px) {
   .modal-col1 {
     min-height: 550px;
     background-position: 50% 60%;
     background-size: cover;
     background-repeat: no-repeat;
+  }
+  .modal-round {
+    border-radius: 5px 0px 0px 5px;
   }
 }
 
