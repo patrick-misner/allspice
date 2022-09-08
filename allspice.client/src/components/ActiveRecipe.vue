@@ -137,7 +137,7 @@
                   required
                 />
 
-                <div class="text-end">
+                <div class="text-end mb-5">
                   <button type="submit" class="btn btn-primary m-2">Add</button>
                 </div>
               </form>
@@ -145,10 +145,8 @@
           </div>
         </div>
 
-        <div
-          class="d-flex justify-content-end align-items-end published p-2 pt-3"
-        >
-          published by: {{ recipe.creator.name }}
+        <div class="d-flex justify-content-end align-items-end published p-2">
+          <span>published by: {{ recipe.creator.name }}</span>
         </div>
       </div>
     </div>
@@ -312,7 +310,7 @@ export default {
 
 @media (min-width: 992px) {
   .modal-col1 {
-    min-height: 550px;
+    min-height: 650px;
     background-position: 50% 60%;
     background-size: cover;
     background-repeat: no-repeat;
