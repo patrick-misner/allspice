@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-md-6 overflow">
+    <div class="col-lg-6 overflow">
       <div
         class="
           d-flex

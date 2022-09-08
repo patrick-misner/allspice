@@ -145,7 +145,9 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-end align-items-end published p-3">
+        <div
+          class="d-flex justify-content-end align-items-end published p-2 pt-3"
+        >
           published by: {{ recipe.creator.name }}
         </div>
       </div>
