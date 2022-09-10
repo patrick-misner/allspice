@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div
-        class="col-lg-4 modal-col1 text-end modal-round"
+        class="col-lg-4 modal-col1 text-end"
         :style="`background-image: url(${recipe.picture})`"
       >
         <i class="text-danger fs-1 mdi mdi-heart-outline bg-grey rounded"></i>
@@ -36,49 +36,33 @@
         </div>
         <span class="text-grey fs-4"> {{ recipe.subtitle }}</span>
 
+        <!-- NOTE STEPS -->
         <div class="row pt-5">
           <div class="col-lg-6">
-            <div class="text-center bg-primary rounded">
-              <h3>Recipe Steps</h3>
-            </div>
-            <draggable
-              class="dragArea list-group"
-              :list="list1"
-              @change="sortSteps()"
-              :disabled="account.id !== recipe.creatorId"
-              item-key="body"
-            >
-              <template #item="{ element }">
-                <div
-                  class="
-                    list-group-item
-                    d-flex
-                    align-items-center
-                    justify-content-between
-                  "
-                >
-                  <div class="">
+            <div class="elevation-2 rounded">
+              <div class="text-center bg-primary rounded-top">
+                <h3>Recipe Steps</h3>
+              </div>
+              <ol>
+                <li v-for="s in steps" :key="s.id" class="py-2">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <span>{{ s.body }}</span>
                     <i
                       v-if="account.id == recipe.creatorId"
-                      class="mdi mdi-reorder-horizontal fs-5 me-2"
-                    >
-                    </i>
-                    <B>{{ "Step " + element.position + ": " }}</B
-                    >{{ element.body }}
+                      @click="deleteStep(s.id)"
+                      class="mdi mdi-trash-can text-danger selectable grow"
+                    ></i>
                   </div>
-                  <i
-                    v-if="account.id == recipe.creatorId"
-                    @click="deleteStep({ element })"
-                    class="mdi mdi-close text-danger selectable grow text-end"
-                  ></i>
-                </div>
-              </template>
-            </draggable>
+                </li>
+              </ol>
+            </div>
             <form
               v-if="account.id == recipe.creatorId"
               @submit.prevent="addStep"
             >
-              <div class="my-3">
+              <div class="mb-3">
                 <input
                   v-model="stepData.body"
                   type="text"
@@ -95,7 +79,7 @@
           </div>
           <div class="col-lg-6">
             <div class="elevation-2 rounded">
-              <div class="text-center bg-primary rounded">
+              <div class="text-center bg-primary rounded-top">
                 <h3>Ingredients</h3>
               </div>
               <ul>
@@ -137,7 +121,7 @@
                   required
                 />
 
-                <div class="text-end mb-5">
+                <div class="text-end">
                   <button type="submit" class="btn btn-primary m-2">Add</button>
                 </div>
               </form>
@@ -145,8 +129,8 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-end align-items-end published p-2">
-          <span>published by: {{ recipe.creator.name }}</span>
+        <div class="d-flex justify-content-end align-items-end published p-3">
+          published by: {{ recipe.creator.name }}
         </div>
       </div>
     </div>
@@ -162,22 +146,7 @@ import { ingredientsService } from "../services/IngredientsService"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { Modal } from "bootstrap"
-import draggable from 'vuedraggable'
 export default {
-  components: {
-    draggable
-  },
-  data() {
-    return {
-      enabled: true,
-      list1: computed(() => AppState.steps),
-    };
-  },
-  methods: {
-    log: function (evt) {
-      window.console.log(evt);
-    }
-  },
   setup() {
     const ingredientData = ref({
       recipeId: AppState.activeRecipe.id
@@ -203,8 +172,8 @@ export default {
       stepData,
       recipe: computed(() => AppState.activeRecipe),
       ingredients: computed(() => AppState.ingredients),
-      account: computed(() => AppState.account),
       steps: computed(() => AppState.steps),
+      account: computed(() => AppState.account),
       async deleteRecipe() {
         try {
           if (await Pop.confirm('Are you sure you want to delete this recipe?')) {
@@ -219,10 +188,8 @@ export default {
       },
       async deleteStep(stepId) {
         try {
-          logger.log('delete step', stepId.element.id)
           if (await Pop.confirm('Are you sure you want to delete this step?')) {
-            await stepsService.deleteStep(stepId.element.id)
-            this.sortSteps()
+            await stepsService.deleteStep(stepId)
             Pop.toast('Step deleted', 'success')
           }
         } catch (error) {
@@ -254,37 +221,9 @@ export default {
       },
       async addStep() {
         try {
-          stepData.value.position = 1
-          if (this.steps.length > 0) {
-            let lastStep = this.steps[this.steps.length - 1]
-            stepData.value.position = lastStep.position + 1
-          }
           await stepsService.createStep(stepData.value)
           stepData.value.body = ''
           Pop.toast("Step added!", 'success')
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
-        }
-      },
-      async updateStep(step) {
-        try {
-          await stepsService.updateStep(step)
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
-        }
-      },
-      async sortSteps() {
-        try {
-          logger.log('sort steps ran')
-          let steps = AppState.steps
-          for (let i = 0; i < steps.length; i++) {
-            const step = steps[i];
-            step.position = i + 1
-            this.updateStep(step)
-          }
-          Pop.toast("Steps updated!", 'success')
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
@@ -304,19 +243,12 @@ export default {
   background-repeat: no-repeat;
 }
 
-.modal-round {
-  border-radius: 5px 5px 0px 0px;
-}
-
 @media (min-width: 992px) {
   .modal-col1 {
-    min-height: 650px;
+    min-height: 550px;
     background-position: 50% 60%;
     background-size: cover;
     background-repeat: no-repeat;
-  }
-  .modal-round {
-    border-radius: 5px 0px 0px 5px;
   }
 }
 
