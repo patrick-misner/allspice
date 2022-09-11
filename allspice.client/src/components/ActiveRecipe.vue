@@ -39,44 +39,9 @@
         <!-- NOTE STEPS -->
         <div class="row pt-5">
           <div class="col-lg-6">
-            <div class="elevation-2 rounded">
-              <div class="text-center bg-primary rounded-top">
-                <h3>Recipe Steps</h3>
-              </div>
-              <ol>
-                <li v-for="s in steps" :key="s.id" class="py-2">
-                  <div
-                    class="d-flex justify-content-between align-items-center"
-                  >
-                    <span>{{ s.body }}</span>
-                    <i
-                      v-if="account.id == recipe.creatorId"
-                      @click="deleteStep(s.id)"
-                      class="mdi mdi-trash-can text-danger selectable grow"
-                    ></i>
-                  </div>
-                </li>
-              </ol>
-            </div>
-            <form
-              v-if="account.id == recipe.creatorId"
-              @submit.prevent="addStep"
-            >
-              <div class="mb-3">
-                <input
-                  v-model="stepData.body"
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="Add Step"
-                  required
-                />
-                <div class="text-end m-2">
-                  <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-              </div>
-            </form>
+            <Steps />
           </div>
+
           <div class="col-lg-6">
             <div class="elevation-2 rounded">
               <div class="text-center bg-primary rounded-top">
@@ -146,6 +111,7 @@ import { ingredientsService } from "../services/IngredientsService"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { Modal } from "bootstrap"
+import Steps from "./Steps.vue"
 export default {
   setup() {
     const ingredientData = ref({
@@ -157,16 +123,17 @@ export default {
     });
     watchEffect(async () => {
       try {
-        AppState.account
+        AppState.account;
         if (AppState.activeRecipe.id) {
-          await recipesService.getIngredients(AppState.activeRecipe.id)
-          await recipesService.getSteps(AppState.activeRecipe.id)
+          await recipesService.getIngredients(AppState.activeRecipe.id);
+          await recipesService.getSteps(AppState.activeRecipe.id);
         }
-      } catch (error) {
-        logger.error(error)
-        Pop.toast(error.message, 'error')
       }
-    })
+      catch (error) {
+        logger.error(error);
+        Pop.toast(error.message, "error");
+      }
+    });
     return {
       ingredientData,
       stepData,
@@ -176,61 +143,67 @@ export default {
       account: computed(() => AppState.account),
       async deleteRecipe() {
         try {
-          if (await Pop.confirm('Are you sure you want to delete this recipe?')) {
-            await recipesService.deleteRecipe(this.recipe.id)
-            Modal.getOrCreateInstance(document.getElementById("active-recipe")).hide()
-            Pop.toast('Recipe deleted', 'success')
+          if (await Pop.confirm("Are you sure you want to delete this recipe?")) {
+            await recipesService.deleteRecipe(this.recipe.id);
+            Modal.getOrCreateInstance(document.getElementById("active-recipe")).hide();
+            Pop.toast("Recipe deleted", "success");
           }
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async deleteStep(stepId) {
         try {
-          if (await Pop.confirm('Are you sure you want to delete this step?')) {
-            await stepsService.deleteStep(stepId)
-            Pop.toast('Step deleted', 'success')
+          if (await Pop.confirm("Are you sure you want to delete this step?")) {
+            await stepsService.deleteStep(stepId);
+            Pop.toast("Step deleted", "success");
           }
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async deleteIngredient(ingredientId) {
         try {
-          if (await Pop.confirm('Are you sure you want to delete this ingredient?')) {
-            await ingredientsService.deleteIngredient(ingredientId)
-            Pop.toast('Step deleted', 'success')
+          if (await Pop.confirm("Are you sure you want to delete this ingredient?")) {
+            await ingredientsService.deleteIngredient(ingredientId);
+            Pop.toast("Step deleted", "success");
           }
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async addIngredient() {
         try {
-          await ingredientsService.createIngredient(ingredientData.value)
-          ingredientData.value.name = ''
-          ingredientData.value.quantity = ''
-          Pop.toast("Ingredient Added!", "success")
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+          await ingredientsService.createIngredient(ingredientData.value);
+          ingredientData.value.name = "";
+          ingredientData.value.quantity = "";
+          Pop.toast("Ingredient Added!", "success");
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async addStep() {
         try {
-          await stepsService.createStep(stepData.value)
-          stepData.value.body = ''
-          Pop.toast("Step added!", 'success')
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+          await stepsService.createStep(stepData.value);
+          stepData.value.body = "";
+          Pop.toast("Step added!", "success");
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       }
-    }
-  }
+    };
+  },
+  components: { Steps }
 }
 </script>
 
