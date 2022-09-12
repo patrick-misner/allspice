@@ -161,7 +161,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .modal-col1 {
   height: 250px;
   min-height: 250px;
@@ -170,12 +170,19 @@ export default {
   background-repeat: no-repeat;
 }
 
+.modal-round {
+  border-radius: 5px 5px 0px 0px;
+}
+
 @media (min-width: 992px) {
   .modal-col1 {
     min-height: 850px;
     background-position: 50% 60%;
     background-size: cover;
     background-repeat: no-repeat;
+  }
+  .modal-round {
+    border-radius: 5px 0px 0px 5px;
   }
 }
 

@@ -26,7 +26,7 @@
         disabled="true"
         item-key="position"
       >
-        <template #item="{ element, index }">
+        <template #item="{ element }">
           <li
             :class="
               ingredientsView == 'Edit'

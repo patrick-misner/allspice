@@ -50,6 +50,7 @@
               type="text-area"
               class="form-control form-control-sm"
               v-model="element.body"
+              placeholder="Step details..."
             />
             <span v-if="stepsView == ''" class="mx-2">
               {{ element.body }}
