@@ -13,6 +13,10 @@ class IngredientsService {
     const res = await api.post('api/ingredients', ingredientData)
     AppState.ingredients.push(res.data)
   }
+
+  async updateIngredient(body) {
+    const res = await api.put('api/ingredients/' + body.id, body)
+  }
 }
 
 export const ingredientsService = new IngredientsService()

@@ -26,8 +26,8 @@ CREATE TABLE
         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
-        name VARCHAR(255) NOT NULL,
-        quantity VARCHAR(255) NOT NULL,
+        name VARCHAR(255),
+        quantity VARCHAR(255),
         recipeId INT NOT NULL,
         FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE
     ) default charset utf8;
@@ -38,7 +38,7 @@ CREATE TABLE
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
         position INT NOT NULL,
-        body TEXT NOT NULL,
+        body TEXT,
         recipeId INT NOT NULL,
         FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE
     ) default charset utf8;
@@ -86,3 +86,7 @@ CREATE TABLE
  FROM patients p
  JOIN doctorpatient dp ON p.id = dp.patientId
  WHERE dp.doctorId = 3 */
+
+/* ALTER TABLE steps MODIFY body TEXT;
+ ALTER TABLE ingredients MODIFY name VARCHAR(255);
+ ALTER TABLE ingredients MODIFY quantity VARCHAR(255); */

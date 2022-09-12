@@ -42,62 +42,16 @@
             <Steps />
           </div>
 
+          <!-- NOTE INGREDIENTS -->
           <div class="col-lg-6">
-            <div class="elevation-2 rounded">
-              <div class="text-center bg-primary rounded-top">
-                <h3>Ingredients</h3>
-              </div>
-              <ul>
-                <li v-for="i in ingredients" :key="i.id" class="py-2">
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <span>{{ i.quantity + " of " }}</span>
-                      <span> {{ i.name }}</span>
-                    </div>
-                    <div>
-                      <i
-                        v-if="account.id == recipe.creatorId"
-                        @click="deleteIngredient(i.id)"
-                        class="mdi mdi-trash-can selectable grow text-danger"
-                      ></i>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <div v-if="account.id == recipe.creatorId" class="mb-3">
-              <form @submit.prevent="addIngredient">
-                <input
-                  v-model="ingredientData.name"
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="Ingredient name..."
-                  required
-                />
-
-                <input
-                  v-model="ingredientData.quantity"
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="Qty: 2 tbsp..."
-                  required
-                />
-
-                <div class="text-end">
-                  <button type="submit" class="btn btn-primary m-2">Add</button>
-                </div>
-              </form>
-            </div>
+            <Ingredients />
           </div>
         </div>
-
-        <div class="d-flex justify-content-end align-items-end published p-3">
-          published by: {{ recipe.creator.name }}
-        </div>
       </div>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-end published p-3">
+      published by: {{ recipe.creator.name }}
     </div>
   </div>
 </template>
@@ -218,7 +172,7 @@ export default {
 
 @media (min-width: 992px) {
   .modal-col1 {
-    min-height: 550px;
+    min-height: 850px;
     background-position: 50% 60%;
     background-size: cover;
     background-repeat: no-repeat;

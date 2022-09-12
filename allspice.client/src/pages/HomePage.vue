@@ -94,6 +94,7 @@
 import { computed, onMounted, ref, watchEffect } from "@vue/runtime-core";
 import { AppState } from "../AppState";
 import { logger } from "../utils/Logger";
+import draggable from 'vuedraggable';
 import { recipesService } from "../services/RecipesService"
 import Pop from "../utils/Pop";
 import { Modal } from "bootstrap";
