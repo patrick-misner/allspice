@@ -34,17 +34,30 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { computed, ref } from "@vue/reactivity";
 import { recipesService } from "../services/RecipesService";
 import { logger } from "../utils/Logger";
+import { accountService } from "../services/AccountService";
+import { AppState } from "../AppState";
+import { watchEffect } from "@vue/runtime-core";
 export default {
   setup() {
-    const searchTerm = ref('')
+    const searchTerm = ref('');
+    watchEffect(() => {
+      if (AppState.search == false) {
+        searchTerm.value = ''
+      }
+    })
     return {
       searchTerm,
+      account: computed(() => AppState.account),
       async searchRecipes() {
-        logger.log('search recipes ran')
         await recipesService.searchRecipes(searchTerm.value)
+        AppState.search = true
+        AppState.searchWord = searchTerm.value
+        if (AppState.account.id) {
+          await accountService.getFavorites()
+        }
       }
     };
   },

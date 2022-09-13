@@ -16,11 +16,11 @@
       >
         <span
           :class="[
-            recipeView
-              ? 'selectable p-2'
-              : 'selectable bg-primary rounded p-2 elevation-2',
+            recipeView == 'Home' && !search
+              ? 'selectable bg-primary rounded p-2 elevation-2'
+              : 'selectable p-2',
           ]"
-          @click="recipeView = ''"
+          @click="returnHome()"
           >Home</span
         >
         <span
@@ -47,14 +47,31 @@
     </div>
   </div>
   <div class="row">
+    <div v-if="search == true" class="text-center text-muted">
+      <span>Search results for "{{ searchWord }}" </span>
+    </div>
+    <div
+      v-if="search == true && recipeView == 'Home' && recipes.length < 1"
+      class="text-center text-danger mt-3"
+    >
+      <span> No results </span>
+    </div>
     <Recipe v-for="r in recipes" :key="r.id" :recipe="r" />
     <div v-if="recipes.length < 1" class="col-12">
       <div class="d-flex justify-content-center">
-        <span v-if="recipeView == 'Favorites' && account.id" class="text-muted"
+        <span
+          v-if="recipeView == 'Favorites' && account.id && !search"
+          class="text-muted"
           >You have not added any recipes to your favorites
         </span>
 
-        <div v-if="recipeView == 'myRecipes' && account.id">
+        <span
+          v-if="recipeView == 'Favorites' && account.id && search"
+          class="text-danger mt-3"
+          >no matches under favorites
+        </span>
+
+        <div v-if="recipeView == 'myRecipes' && account.id && !search">
           <span class="text-muted"> You have not added any recipes.</span>
           <a href=""></a>
 
@@ -68,6 +85,12 @@
             </button>
           </div>
         </div>
+
+        <span
+          v-if="recipeView == 'myRecipes' && account.id && search"
+          class="text-danger mt-3"
+          >no matches under my recipes
+        </span>
 
         <div v-if="!account.id" class="">
           <span class="text-muted"
@@ -114,7 +137,7 @@ import { AuthService } from "../services/AuthService";
 export default {
   name: 'Home',
   setup() {
-    const recipeView = ref('');
+    const recipeView = ref('Home');
     onMounted(async () => {
       try {
         await recipesService.getRecipes()
@@ -133,7 +156,7 @@ export default {
       }
     });
     function filterRecipe(rview) {
-      if (rview == false) {
+      if (rview == 'Home') {
         return r => true
       }
       if (rview == 'Favorites') {
@@ -151,12 +174,30 @@ export default {
       activeProvider: computed(() => AppState.activeRecipe),
       account: computed(() => AppState.account),
       favorites: computed(() => AppState.favorites),
+      search: computed(() => AppState.search),
+      searchWord: computed(() => AppState.searchWord),
       createRecipe() {
         Modal.getOrCreateInstance(document.getElementById('recipe-form')).show()
       },
       async login() {
         AuthService.loginWithPopup();
       },
+      async returnHome() {
+        recipeView.value = 'Home'
+        if (AppState.search) {
+          try {
+            AppState.search = false
+            await recipesService.getRecipes()
+            if (AppState.account.id) {
+              await accountService.getFavorites()
+            }
+          } catch (error) {
+            logger.error(error)
+            Pop.toast(error.message, 'error')
+          }
+
+        }
+      }
     }
   }
 }

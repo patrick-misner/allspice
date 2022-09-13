@@ -41,21 +41,6 @@
           />
           <label for="floatingInput">Subtitle</label>
         </div>
-
-        <div class="form-floating">
-          <textarea
-            v-model="editable.description"
-            class="form-control mb-3"
-            placeholder="Leave a comment here"
-            id="floatingTextarea2"
-            style="height: 100px"
-            maxlength="75"
-            required
-          ></textarea>
-          <label for="floatingTextarea2"
-            >Brief description of the recipe..</label
-          >
-        </div>
       </div>
 
       <div class="col-lg-6">
@@ -74,6 +59,7 @@
             <option value="Salad">Salad</option>
             <option value="Sides">Sides</option>
             <option value="Appetizer">Appetizer</option>
+            <option value="Dessert">Dessert</option>
           </select>
           <label for="floatingSelect">Select Category</label>
         </div>
@@ -121,6 +107,7 @@ export default {
           await recipesService.createRecipe(editable.value)
           Modal.getOrCreateInstance(document.getElementById("recipe-form")).hide()
           editable.value = {}
+          Modal.getOrCreateInstance(document.getElementById("active-recipe")).show()
           Pop.toast("recipe created!", "success")
         } catch (error) {
           logger.error(error)

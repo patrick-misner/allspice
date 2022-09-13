@@ -4,9 +4,7 @@
       <div
         class="col-lg-4 modal-col1 text-end modal-round"
         :style="`background-image: url(${recipe.picture})`"
-      >
-        <i class="text-danger fs-1 mdi mdi-heart-outline bg-grey rounded"></i>
-      </div>
+      ></div>
 
       <div class="col-lg-8 pt-3 p-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -15,23 +13,47 @@
             <span class="bg-grey rounded-pill p-1 px-3 mx-3">{{
               recipe.category
             }}</span>
+            <p>{{}}</p>
           </div>
 
-          <div class="">
-            <button
-              v-if="account.id == recipe.creatorId"
-              @click="deleteRecipe"
-              type="button"
-              class="btn btn-danger mx-3"
-            >
-              Delete <i class="mdi mdi-trash-can"></i>
-            </button>
-            <button
-              type="button"
-              class="btn-close btn btn-light bg-light"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+          <div class="position-absolute top-0 end-0 p-2">
+            <div class="dropdown" v-if="recipe.creatorId == account.id">
+              <a
+                class="btn"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="mdi mdi-dots-horizontal ellipses"></i>
+              </a>
+
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="dropdownMenuLink"
+              >
+                <li>
+                  <a
+                    @click="deleteRecipe"
+                    class="
+                      dropdown-item
+                      text-danger
+                      d-flex
+                      justify-content-between
+                    "
+                    href="#"
+                    >Delete<i class="mdi mdi-trash-can"> </i
+                  ></a>
+                </li>
+              </ul>
+              <button
+                type="button"
+                class="btn-close btn btn-light bg-light"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
           </div>
         </div>
         <span class="text-grey fs-4"> {{ recipe.subtitle }}</span>
@@ -43,15 +65,15 @@
           </div>
 
           <!-- NOTE INGREDIENTS -->
-          <div class="col-lg-6">
+          <div class="col-lg-6 mb-5">
             <Ingredients />
           </div>
         </div>
       </div>
     </div>
 
-    <div class="d-flex justify-content-end align-items-end published p-3">
-      published by: {{ recipe.creator.name }}
+    <div class="published p-2">
+      <span>published by: {{ recipe.creator.name }}</span>
     </div>
   </div>
 </template>
@@ -176,7 +198,7 @@ export default {
 
 @media (min-width: 992px) {
   .modal-col1 {
-    min-height: 850px;
+    min-height: 750px;
     background-position: 50% 60%;
     background-size: cover;
     background-repeat: no-repeat;
