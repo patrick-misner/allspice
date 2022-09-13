@@ -17,6 +17,10 @@ namespace allspice.Services
     {
       return _repo.Get();
     }
+    internal List<Recipe> GetSearch(string query)
+    {
+      return _repo.GetSearch(query);
+    }
     internal Recipe Get(int id)
     {
       Recipe found = _repo.Get(id);

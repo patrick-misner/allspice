@@ -31,18 +31,24 @@ namespace allspice.Controllers
     }
 
     [HttpGet]
-    public ActionResult<List<Recipe>> Get()
+    public ActionResult<List<Recipe>> Get(string query = "")
     {
       try
       {
-        List<Recipe> recipes = _rServ.Get();
-        return Ok(recipes);
+        if (query == "")
+        {
+          List<Recipe> recipes = _rServ.Get();
+          return Ok(recipes);
+        }
+        List<Recipe> recipesearch = _rServ.GetSearch(query);
+        return Ok(recipesearch);
       }
       catch (Exception e)
       {
         return BadRequest(e.Message);
       }
     }
+
     [HttpGet("{id}")]
     public ActionResult<Recipe> Get(int id)
     {

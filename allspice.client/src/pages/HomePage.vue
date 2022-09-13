@@ -54,9 +54,20 @@
           >You have not added any recipes to your favorites
         </span>
 
-        <span v-if="recipeView == 'myRecipes' && account.id" class="text-muted"
-          >You have not added any recipes. <a href=""></a>
-        </span>
+        <div v-if="recipeView == 'myRecipes' && account.id">
+          <span class="text-muted"> You have not added any recipes.</span>
+          <a href=""></a>
+
+          <div class="text-center m-3">
+            <button
+              @click="createRecipe"
+              class="btn btn-primary"
+              title="Add a Recipe"
+            >
+              Add Recipe
+            </button>
+          </div>
+        </div>
 
         <div v-if="!account.id" class="">
           <span class="text-muted"

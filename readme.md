@@ -1,5 +1,5 @@
 
-<h1 align="center"><project-name> Keeper</h1>
+<h1 align="center"><project-name> AllSpice</h1>
 
 <p align="center"><project-description>Users can create posts with a photo called a "Keep" and create collections called a "Vault" that can store keeps created by any user. The Vaults can be marked as private on creation so only the logged in user can see the Vault. When a logged-in user clicks on Keep, they have the ability to add the keep to a Vault. The front-end and back-end will not allow a keep to be added to the same vault twice. The back-end is a .NET C# API server using the MVC pattern and dapper as the ORM to query MySQL. The front-end was written with Vue.js, a reactive javascript framework.</p>
 

@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div
-        class="col-lg-4 modal-col1 text-end"
+        class="col-lg-4 modal-col1 text-end modal-round"
         :style="`background-image: url(${recipe.picture})`"
       >
         <i class="text-danger fs-1 mdi mdi-heart-outline bg-grey rounded"></i>

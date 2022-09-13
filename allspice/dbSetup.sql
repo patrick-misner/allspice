@@ -90,3 +90,8 @@ CREATE TABLE
 /* ALTER TABLE steps MODIFY body TEXT;
  ALTER TABLE ingredients MODIFY name VARCHAR(255);
  ALTER TABLE ingredients MODIFY quantity VARCHAR(255); */
+
+SELECT r.*, a.*
+FROM recipes r
+    JOIN accounts a ON a.id = r.creatorId
+WHERE r.title LIKE '%salad%'

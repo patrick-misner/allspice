@@ -10,7 +10,7 @@ class RecipesService {
     recipes.forEach(r => {
       r.isFavorite = false
     });
-    AppState.recipes = res.data
+    AppState.recipes = recipes
   }
 
   async getIngredients(recipeId) {
@@ -43,6 +43,15 @@ class RecipesService {
   async deleteRecipe(recipeId) {
     const res = await api.delete('api/recipes/' + recipeId)
     AppState.recipes = AppState.recipes.filter(r => r.id != recipeId)
+  }
+
+  async searchRecipes(query) {
+    const res = await api.get('api/recipes?query=' + query)
+    let recipes = res.data
+    recipes.forEach(r => {
+      r.isFavorite = false
+    });
+    AppState.recipes = recipes
   }
 }
 

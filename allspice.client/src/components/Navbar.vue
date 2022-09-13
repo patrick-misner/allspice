@@ -1,27 +1,30 @@
 <template>
   <div class="header-img d-flex justify-content-end">
     <div>
-      <div class="input-group pt-3">
-        <input
-          class="form-control border-end-0 border"
-          type="search"
-          value="search"
-          id="example-search-input"
-        />
-        <span class="input-group-append">
-          <button
-            class="
-              btn btn-outline-secondary
-              bg-white
-              border-start-0 border-bottom-0 border
-              ms-n5
-            "
-            type="button"
-          >
-            <i class="mdi mdi-magnify"></i>
-          </button>
-        </span>
-      </div>
+      <form @submit.prevent="searchRecipes()">
+        <div class="input-group pt-3">
+          <input
+            v-model="searchTerm"
+            class="form-control border-end-0 border"
+            type="search"
+            placeholder="search"
+            id="example-search-input"
+          />
+          <span class="input-group-append">
+            <button
+              class="
+                btn btn-outline-secondary
+                bg-white
+                border-start-0 border-bottom-0 border
+                ms-n5
+              "
+              type="submit"
+            >
+              <i class="mdi mdi-magnify"></i>
+            </button>
+          </span>
+        </div>
+      </form>
     </div>
 
     <div class="p-3">
@@ -31,9 +34,19 @@
 </template>
 
 <script>
+import { ref } from "@vue/reactivity";
+import { recipesService } from "../services/RecipesService";
+import { logger } from "../utils/Logger";
 export default {
   setup() {
-    return {};
+    const searchTerm = ref('')
+    return {
+      searchTerm,
+      async searchRecipes() {
+        logger.log('search recipes ran')
+        await recipesService.searchRecipes(searchTerm.value)
+      }
+    };
   },
 };
 </script>
