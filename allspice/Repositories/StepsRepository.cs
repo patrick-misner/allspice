@@ -63,6 +63,7 @@ namespace allspice.Repositories
       SELECT *
       FROM steps
       WHERE recipeId = @id
+      ORDER BY steps.position
       ";
       return _db.Query<Step>(sql, new { id }).ToList();
     }

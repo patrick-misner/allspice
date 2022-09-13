@@ -13,6 +13,11 @@ class StepsService {
     const res = await api.post('api/steps', stepData)
     AppState.steps.push(res.data)
   }
+
+  async updateStep(body) {
+    const res = await api.put('api/steps/' + body.id, body)
+  }
+
 }
 
 export const stepsService = new StepsService()

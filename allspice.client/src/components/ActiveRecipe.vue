@@ -2,11 +2,9 @@
   <div class="container-fluid">
     <div class="row">
       <div
-        class="col-lg-4 modal-col1 text-end"
+        class="col-lg-4 modal-col1 text-end modal-round"
         :style="`background-image: url(${recipe.picture})`"
-      >
-        <i class="text-danger fs-1 mdi mdi-heart-outline bg-grey rounded"></i>
-      </div>
+      ></div>
 
       <div class="col-lg-8 pt-3 p-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -15,114 +13,67 @@
             <span class="bg-grey rounded-pill p-1 px-3 mx-3">{{
               recipe.category
             }}</span>
+            <p>{{}}</p>
           </div>
 
-          <div class="">
-            <button
-              v-if="account.id == recipe.creatorId"
-              @click="deleteRecipe"
-              type="button"
-              class="btn btn-danger mx-3"
-            >
-              Delete <i class="mdi mdi-trash-can"></i>
-            </button>
-            <button
-              type="button"
-              class="btn-close btn btn-light bg-light"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+          <div class="position-absolute top-0 end-0 p-2">
+            <div class="dropdown" v-if="recipe.creatorId == account.id">
+              <a
+                class="btn"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="mdi mdi-dots-horizontal ellipses"></i>
+              </a>
+
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="dropdownMenuLink"
+              >
+                <li>
+                  <a
+                    @click="deleteRecipe"
+                    class="
+                      dropdown-item
+                      text-danger
+                      d-flex
+                      justify-content-between
+                    "
+                    href="#"
+                    >Delete<i class="mdi mdi-trash-can"> </i
+                  ></a>
+                </li>
+              </ul>
+              <button
+                type="button"
+                class="btn-close btn btn-light bg-light"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
           </div>
         </div>
         <span class="text-grey fs-4"> {{ recipe.subtitle }}</span>
 
+        <!-- NOTE STEPS -->
         <div class="row pt-5">
           <div class="col-lg-6">
-            <div class="text-center bg-primary rounded-top">
-              <h3>Recipe Steps</h3>
-            </div>
-            <draggable
-              class="dragArea list-group"
-              :list="list1"
-              :group="{ body: 'people', pull: 'clone', put: false }"
-              @change="log"
-              item-key="body"
-            >
-              <template #item="{ element }">
-                <div
-                  class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    selectable
-                  "
-                >
-                  <div>
-                    {{ element.body }}
-                  </div>
-                  <div>
-                    <i class="mdi mdi-drag-horizontal-variant"></i>
-                  </div>
-                </div>
-              </template>
-            </draggable>
+            <Steps />
           </div>
-          <div class="col-lg-6">
-            <div class="elevation-2 rounded">
-              <div class="text-center bg-primary rounded-top">
-                <h3>Ingredients</h3>
-              </div>
-              <ul>
-                <li v-for="i in ingredients" :key="i.id" class="py-2">
-                  <div class="d-flex justify-content-between">
-                    <div>
-                      <span>{{ i.quantity + " of " }}</span>
-                      <span> {{ i.name }}</span>
-                    </div>
-                    <div>
-                      <i
-                        v-if="account.id == recipe.creatorId"
-                        @click="deleteIngredient(i.id)"
-                        class="mdi mdi-trash-can selectable grow text-danger"
-                      ></i>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
 
-            <div v-if="account.id == recipe.creatorId" class="mb-3">
-              <form @submit.prevent="addIngredient">
-                <input
-                  v-model="ingredientData.name"
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="Ingredient name..."
-                  required
-                />
-
-                <input
-                  v-model="ingredientData.quantity"
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="Qty: 2 tbsp..."
-                  required
-                />
-
-                <div class="text-end">
-                  <button type="submit" class="btn btn-primary m-2">Add</button>
-                </div>
-              </form>
-            </div>
+          <!-- NOTE INGREDIENTS -->
+          <div class="col-lg-6 mb-5">
+            <Ingredients />
           </div>
-        </div>
-
-        <div class="d-flex justify-content-end align-items-end published p-3">
-          published by: {{ recipe.creator.name }}
         </div>
       </div>
+    </div>
+
+    <div class="published p-2">
+      <span>published by: {{ recipe.creator.name }}</span>
     </div>
   </div>
 </template>
@@ -136,24 +87,8 @@ import { ingredientsService } from "../services/IngredientsService"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { Modal } from "bootstrap"
-import draggable from 'vuedraggable'
+import Steps from "./Steps.vue"
 export default {
-  name: "clone",
-  display: "Clone",
-  order: 2,
-  components: {
-    draggable
-  },
-  data() {
-    return {
-      list1: computed(() => AppState.steps),
-    };
-  },
-  methods: {
-    log: function (evt) {
-      window.console.log(evt);
-    }
-  },
   setup() {
     const ingredientData = ref({
       recipeId: AppState.activeRecipe.id
@@ -164,84 +99,91 @@ export default {
     });
     watchEffect(async () => {
       try {
-        AppState.account
+        AppState.account;
         if (AppState.activeRecipe.id) {
-          await recipesService.getIngredients(AppState.activeRecipe.id)
-          await recipesService.getSteps(AppState.activeRecipe.id)
+          await recipesService.getIngredients(AppState.activeRecipe.id);
+          await recipesService.getSteps(AppState.activeRecipe.id);
         }
-      } catch (error) {
-        logger.error(error)
-        Pop.toast(error.message, 'error')
       }
-    })
+      catch (error) {
+        logger.error(error);
+        Pop.toast(error.message, "error");
+      }
+    });
     return {
       ingredientData,
       stepData,
       recipe: computed(() => AppState.activeRecipe),
       ingredients: computed(() => AppState.ingredients),
-      account: computed(() => AppState.account),
       steps: computed(() => AppState.steps),
+      account: computed(() => AppState.account),
       async deleteRecipe() {
         try {
-          if (await Pop.confirm('Are you sure you want to delete this recipe?')) {
-            await recipesService.deleteRecipe(this.recipe.id)
-            Modal.getOrCreateInstance(document.getElementById("active-recipe")).hide()
-            Pop.toast('Recipe deleted', 'success')
+          if (await Pop.confirm("Are you sure you want to delete this recipe?")) {
+            await recipesService.deleteRecipe(this.recipe.id);
+            Modal.getOrCreateInstance(document.getElementById("active-recipe")).hide();
+            Pop.toast("Recipe deleted", "success");
           }
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async deleteStep(stepId) {
         try {
-          if (await Pop.confirm('Are you sure you want to delete this step?')) {
-            await stepsService.deleteStep(stepId)
-            Pop.toast('Step deleted', 'success')
+          if (await Pop.confirm("Are you sure you want to delete this step?")) {
+            await stepsService.deleteStep(stepId);
+            Pop.toast("Step deleted", "success");
           }
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async deleteIngredient(ingredientId) {
         try {
-          if (await Pop.confirm('Are you sure you want to delete this ingredient?')) {
-            await ingredientsService.deleteIngredient(ingredientId)
-            Pop.toast('Step deleted', 'success')
+          if (await Pop.confirm("Are you sure you want to delete this ingredient?")) {
+            await ingredientsService.deleteIngredient(ingredientId);
+            Pop.toast("Step deleted", "success");
           }
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async addIngredient() {
         try {
-          await ingredientsService.createIngredient(ingredientData.value)
-          ingredientData.value.name = ''
-          ingredientData.value.quantity = ''
-          Pop.toast("Ingredient Added!", "success")
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+          await ingredientsService.createIngredient(ingredientData.value);
+          ingredientData.value.name = "";
+          ingredientData.value.quantity = "";
+          Pop.toast("Ingredient Added!", "success");
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       },
       async addStep() {
         try {
-          await stepsService.createStep(stepData.value)
-          stepData.value.body = ''
-          Pop.toast("Step added!", 'success')
-        } catch (error) {
-          logger.error(error)
-          Pop.toast(error.message, 'error')
+          await stepsService.createStep(stepData.value);
+          stepData.value.body = "";
+          Pop.toast("Step added!", "success");
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
         }
       }
-    }
-  }
+    };
+  },
+  components: { Steps }
 }
 </script>
 
-<style>
+<style scoped>
 .modal-col1 {
   height: 250px;
   min-height: 250px;
@@ -250,12 +192,19 @@ export default {
   background-repeat: no-repeat;
 }
 
+.modal-round {
+  border-radius: 5px 5px 0px 0px;
+}
+
 @media (min-width: 992px) {
   .modal-col1 {
-    min-height: 550px;
+    min-height: 750px;
     background-position: 50% 60%;
     background-size: cover;
     background-repeat: no-repeat;
+  }
+  .modal-round {
+    border-radius: 5px 0px 0px 5px;
   }
 }
 

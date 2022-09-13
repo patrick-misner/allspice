@@ -17,7 +17,9 @@ class AccountService {
     let favorites = res.data
     favorites.forEach(f => {
       let recipe = AppState.recipes.find(r => f.id == r.id)
-      recipe.isFavorite = true
+      if (recipe) {
+        recipe.isFavorite = true
+      }
     });
     AppState.favorites = favorites
   }

@@ -10,7 +10,7 @@ class RecipesService {
     recipes.forEach(r => {
       r.isFavorite = false
     });
-    AppState.recipes = res.data
+    AppState.recipes = recipes
   }
 
   async getIngredients(recipeId) {
@@ -21,11 +21,17 @@ class RecipesService {
   async getSteps(recipeId) {
     const res = await api.get('api/recipes/' + recipeId + '/steps')
     AppState.steps = res.data
+    let steps = AppState.steps
+    for (let i = 0; i < steps.length; i++) {
+      const step = steps[i];
+      step.position = i + 1
+    }
   }
 
   async createRecipe(recipeData) {
     const res = await api.post('/api/recipes', recipeData)
     AppState.recipes.push(res.data)
+    AppState.activeRecipe = res.data
     return res.data
   }
 
@@ -38,6 +44,15 @@ class RecipesService {
   async deleteRecipe(recipeId) {
     const res = await api.delete('api/recipes/' + recipeId)
     AppState.recipes = AppState.recipes.filter(r => r.id != recipeId)
+  }
+
+  async searchRecipes(query) {
+    const res = await api.get('api/recipes?query=' + query)
+    let recipes = res.data
+    recipes.forEach(r => {
+      r.isFavorite = false
+    });
+    AppState.recipes = recipes
   }
 }
 

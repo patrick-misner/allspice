@@ -29,6 +29,23 @@ namespace allspice.Repositories
         return recipe;
       }).ToList();
     }
+
+    internal List<Recipe> GetSearch(string query)
+    {
+      string sql = @"
+        SELECT
+        r.*,
+        a.*
+        FROM recipes r
+        JOIN accounts a ON a.id = r.creatorId
+        WHERE r.title LIKE @n
+        ";
+      return _db.Query<Recipe, Profile, Recipe>(sql, (recipe, profile) =>
+      {
+        recipe.Creator = profile;
+        return recipe;
+      }, new { n = "%" + query + "%" }).ToList();
+    }
     internal Recipe Get(int id)
     {
       string sql = @"
