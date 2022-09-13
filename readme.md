@@ -1,5 +1,5 @@
 
-<h1 align="center"><project-name> AllSpice</h1>
+<h1 align="center"><project-name> All Spice</h1>
 
 <p align="center"><project-description>Users can create recipes and add steps and ingredients. Steps can be reordered with a Vue draggable-next component. Users can search and filter recipes as well. The front-end was written with Vue.js, a reactive javascript framework. The back-end is a .NET C# API server using the MVC pattern and dapper as the ORM to query MySQL.</p>
 
