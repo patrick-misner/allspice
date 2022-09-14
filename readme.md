@@ -26,7 +26,7 @@
 
 - [x] Add query parameter functionality to API
 - [x] Add search to front-end
-- [x] Implement vue3 sortable/draggable component for steps disabled for ingredients
+- [x] Implement vue3 sortable/draggable component for steps but disabled for ingredients
 - [x] Filter recipes by My recipes and Favorites
 
 ## Author
@@ -82,7 +82,7 @@ search bar in top right
 Filtering works on search results
 ![](/allspice.client/src/assets/img/searchresults4.png)
 
-egg salad is not added to favorites
+after removing 
 ![](/allspice.client/src/assets/img/searchresults5.png)
 
 ---
@@ -107,3 +107,9 @@ Not logged in
 
 Logged in
 ![](/allspice.client/src/assets/img/error3.png)
+
+Filtered search result error
+![](/allspice.client/src/assets/img/error4.png)
+
+No matches found
+![](/allspice.client/src/assets/img/error5.png)
