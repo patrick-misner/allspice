@@ -182,6 +182,7 @@ export default {
             let lastStep = this.steps[this.steps.length - 1]
             stepData.value.position = lastStep.position + 1
           }
+          stepData.value.recipeId = AppState.activeRecipe.id
           await stepsService.createStep(stepData.value)
           stepData.value.body = ''
           Pop.toast("Step added!", 'success')

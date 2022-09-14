@@ -173,6 +173,7 @@ export default {
       },
       async addIngredient() {
         try {
+          ingredientData.value.recipeId = AppState.activeRecipe.id
           await ingredientsService.createIngredient(ingredientData.value)
           ingredientData.value.name = ''
           Pop.toast("Ingredient added!", 'success')
