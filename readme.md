@@ -82,7 +82,7 @@ search bar in top right
 Filtering also works on search results
 ![](/allspice.client/src/assets/img/searchresults4.png)
 
-after removing 
+
 ![](/allspice.client/src/assets/img/searchresults5.png)
 
 ---
