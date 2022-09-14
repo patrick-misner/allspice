@@ -11,6 +11,32 @@
 
 
 
+
+## Built With
+
+
+- JavaScript
+- Vue3
+- DotNet MVC
+- C#
+- Dapper
+- MySQL
+- HTML
+- CSS
+
+## Future Updates
+
+- [x] User cannot add keep to the same vault twice front-end / back-end
+- [ ] tags field
+
+## Author
+
+**Patrick Misner**
+
+- [Profile](https://github.com/patrick-misner "Patrick Misner")
+- [Email](mailto:misner.patrick@gmail.com?subject=Hi "Hi!")
+- [Website](https://kingtechnologies.in "Welcome")
+
 # Screenshots
 
 ## Home Page
