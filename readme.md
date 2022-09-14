@@ -10,8 +10,6 @@
 - [Live](https://all-spice.herokuapp.com/ "Live View")
 
 
-
-
 ## Built With
 
 
@@ -26,8 +24,10 @@
 
 ## Future Updates
 
-- [x] User cannot add keep to the same vault twice front-end / back-end
-- [ ] tags field
+- [x] Add query parameter functionality to API
+- [x] Add search to front-end
+- [x] Implement vue3 sortable/draggable component for steps disabled for ingredients
+- [x] Filter recipes by My recipes and Favorites
 
 ## Author
 
@@ -41,85 +41,69 @@
 
 ## Home Page
 
-![Home Page](/src/assets/img/homepage.png "Home Page")
+![Home Page](/allspice.client/src/assets/img/homepage.png)
 
+---
 
-
-
-## Adding a Recipe
-
-Click the plus in the bottom right
-
-image here
-
-![](/Keepr.client/src/assets/img/createrecipestep2.png)
-
-![](/Keepr.client/src/assets/img/createrecipestep3.png)
-
-
-
-
-
-- - -
-## Editing Steps
+## Sorting and Editing Steps
 
 A demo of the vue draggable component for editing steps.
 
 ![](/allspice.client/src/assets/img/editsteps.gif)
 
-![vault](/Keepr.client/src/assets/img/addkeep.png)
+---
 
-Modal triggers
+## Adding a Recipe
 
-![vault](/Keepr.client/src/assets/img/keepform.png)
+Click the add icon in the bottom right
 
-Sweet Alert pop notification
+![](/allspice.client/src/assets/img/createrecipestep1.png)
 
-![](/Keepr.client/src/assets/img/keep-pop.png)
+v-model form with floating labels
+![](/allspice.client/src/assets/img/createrecipestep2.png)
 
-- - -
-## Adding a Keep to a Vault
+Form modal closes and opens for recipe 
+![](/allspice.client/src/assets/img/createrecipestep3.png)
 
-Log in and go to profile
-
-![](/Keepr.client/src/assets/img/myprofile.png)
-
-![vault](/Keepr.client/src/assets/img/addkeep.png)
-
-Modal triggers
-
-![vault](/Keepr.client/src/assets/img/keepform.png)
-
-Sweet Alert pop notification
-
-![](/Keepr.client/src/assets/img/keep-pop.png)
-
-- - -
 
 
 
-## Built With
+- - -
+## Search function
+
+search bar in top right
+
+![](/allspice.client/src/assets/img/searchresults1.png)
+
+![](/allspice.client/src/assets/img/searchresults2.png)
+
+![](/allspice.client/src/assets/img/searchresults3.png)
+
+Filtering works on search results
+![](/allspice.client/src/assets/img/searchresults4.png)
+
+egg salad is not added to favorites
+![](/allspice.client/src/assets/img/searchresults5.png)
+
+---
+
+## Filtering
 
 
-- JavaScript
-- Vue3
-- DotNet MVC
-- C#
-- Dapper
-- MySQL
-- HTML
-- CSS
+My recipes displays recipes with current user's creatorId
+![](/allspice.client/src/assets/img/filterstep2.png)
 
-## Future Updates
+![](/allspice.client/src/assets/img/filterstep3.png)
 
-- [x] User cannot add keep to the same vault twice front-end / back-end
-- [ ] tags field
+---
 
-## Author
+## Error handling
 
-**Patrick Misner**
+Favorites and My Recipes error
+![](/allspice.client/src/assets/img/error1.png)
 
-- [Profile](https://github.com/patrick-misner "Patrick Misner")
-- [Email](mailto:misner.patrick@gmail.com?subject=Hi "Hi!")
-- [Website](https://kingtechnologies.in "Welcome")
+Not logged in
+![](/allspice.client/src/assets/img/error2.png)
 
+Logged in
+![](/allspice.client/src/assets/img/error3.png)
