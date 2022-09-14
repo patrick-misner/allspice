@@ -60,11 +60,11 @@ Modal triggers
 
 Sweet Alert pop notification
 
-![](/Keepr.client/src/assets/img/Pop-notify.png)
+![](/allspice.client/src/assets/img/editsteps.gif)
 - - -
-## Adding a Keep
+## Editing Steps
 
-Log in and go to profile
+A demo of the vue draggable component for editing steps.
 
 ![](/Keepr.client/src/assets/img/myprofile.png)
 
