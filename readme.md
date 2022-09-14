@@ -48,25 +48,24 @@
 
 ## Adding a Recipe
 
-Log in and go to profile
+Click the plus in the bottom right
 
-![](/Keepr.client/src/assets/img/myprofile.png)
+image here
 
-![vault](/Keepr.client/src/assets/img/addvault.png)
+![](/Keepr.client/src/assets/img/createrecipestep2.png)
 
-Modal triggers
+![](/Keepr.client/src/assets/img/createrecipestep3.png)
 
-![vault](/Keepr.client/src/assets/img/privatevault.png)
 
-Sweet Alert pop notification
 
-![](/allspice.client/src/assets/img/editsteps.gif)
+
+
 - - -
 ## Editing Steps
 
 A demo of the vue draggable component for editing steps.
 
-![](/Keepr.client/src/assets/img/myprofile.png)
+![](/allspice.client/src/assets/img/editsteps.gif)
 
 ![vault](/Keepr.client/src/assets/img/addkeep.png)
 
