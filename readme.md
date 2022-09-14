@@ -79,7 +79,7 @@ search bar in top right
 
 ![](/allspice.client/src/assets/img/searchresults3.png)
 
-Filtering works on search results
+Filtering also works on search results
 ![](/allspice.client/src/assets/img/searchresults4.png)
 
 after removing 
