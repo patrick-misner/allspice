@@ -35,7 +35,7 @@
 
 - [Profile](https://github.com/patrick-misner "Patrick Misner")
 - [Email](mailto:misner.patrick@gmail.com?subject=Hi "Hi!")
-- [Website](https://kingtechnologies.in "Welcome")
+- [Website](https://patrick-misner.github.io/ "Patrick Misner")
 
 # Screenshots
 
