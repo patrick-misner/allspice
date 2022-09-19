@@ -7,7 +7,7 @@
 
 - [Repo](https://github.com/patrick-misner/allspice "Keeper Repo")
 
-- [Live](https://all-spice.herokuapp.com/ "Live View")
+- [Live (Heroku, may take some time to load)](https://all-spice.herokuapp.com/ "Live View")
 
 
 ## Built With
