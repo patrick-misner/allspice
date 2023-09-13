@@ -7,70 +7,7 @@
 
 - [Repo](https://github.com/patrick-misner/allspice "Keeper Repo")
 
-- [Live](https://all-spice.herokuapp.com/ "Live View")
-
-
-
-# Screenshots
-
-## Home Page
-
-![Home Page](/src/assets/img/homepage.png "Home Page")
-
-
-
-
-## Adding a Recipe
-
-Log in and go to profile
-
-![](/Keepr.client/src/assets/img/myprofile.png)
-
-![vault](/Keepr.client/src/assets/img/addvault.png)
-
-Modal triggers
-
-![vault](/Keepr.client/src/assets/img/privatevault.png)
-
-Sweet Alert pop notification
-
-![](/Keepr.client/src/assets/img/Pop-notify.png)
-- - -
-## Adding a Keep
-
-Log in and go to profile
-
-![](/Keepr.client/src/assets/img/myprofile.png)
-
-![vault](/Keepr.client/src/assets/img/addkeep.png)
-
-Modal triggers
-
-![vault](/Keepr.client/src/assets/img/keepform.png)
-
-Sweet Alert pop notification
-
-![](/Keepr.client/src/assets/img/keep-pop.png)
-
-- - -
-## Adding a Keep to a Vault
-
-Log in and go to profile
-
-![](/Keepr.client/src/assets/img/myprofile.png)
-
-![vault](/Keepr.client/src/assets/img/addkeep.png)
-
-Modal triggers
-
-![vault](/Keepr.client/src/assets/img/keepform.png)
-
-Sweet Alert pop notification
-
-![](/Keepr.client/src/assets/img/keep-pop.png)
-
-- - -
-
+- [Live (Heroku, may take some time to load)](https://all-spice.herokuapp.com/ "Live View")
 
 
 ## Built With
@@ -87,8 +24,10 @@ Sweet Alert pop notification
 
 ## Future Updates
 
-- [x] User cannot add keep to the same vault twice front-end / back-end
-- [ ] tags field
+- [x] Add query parameter functionality to API
+- [x] Add search to front-end
+- [x] Implement vue3 sortable/draggable component for steps but disabled for ingredients
+- [x] Filter recipes by My recipes and Favorites
 
 ## Author
 
@@ -96,5 +35,81 @@ Sweet Alert pop notification
 
 - [Profile](https://github.com/patrick-misner "Patrick Misner")
 - [Email](mailto:misner.patrick@gmail.com?subject=Hi "Hi!")
-- [Website](https://kingtechnologies.in "Welcome")
+- [Website](https://patrick-misner.github.io/ "Patrick Misner")
 
+# Screenshots
+
+## Home Page
+
+![Home Page](/allspice.client/src/assets/img/homepage.png)
+
+---
+
+## Sorting and Editing Steps
+
+A demo of the vue draggable component for editing steps.
+
+![](/allspice.client/src/assets/img/editsteps.gif)
+
+---
+
+## Adding a Recipe
+
+Click the add icon in the bottom right
+
+![](/allspice.client/src/assets/img/createrecipestep1.png)
+
+v-model form with floating labels
+![](/allspice.client/src/assets/img/createrecipestep2.png)
+
+Form modal closes and opens for recipe 
+![](/allspice.client/src/assets/img/createrecipestep3.png)
+
+
+
+
+- - -
+## Search function
+
+search bar in top right
+
+![](/allspice.client/src/assets/img/searchresults1.png)
+
+![](/allspice.client/src/assets/img/searchresults2.png)
+
+![](/allspice.client/src/assets/img/searchresults3.png)
+
+Filtering also works on search results
+![](/allspice.client/src/assets/img/searchresults4.png)
+
+
+![](/allspice.client/src/assets/img/searchresults5.png)
+
+---
+
+## Filtering
+
+
+My recipes displays recipes with current user's creatorId
+![](/allspice.client/src/assets/img/filterstep2.png)
+
+![](/allspice.client/src/assets/img/filterstep3.png)
+
+---
+
+## Error handling
+
+Favorites and My Recipes error
+![](/allspice.client/src/assets/img/error1.png)
+
+Not logged in
+![](/allspice.client/src/assets/img/error2.png)
+
+Logged in
+![](/allspice.client/src/assets/img/error3.png)
+
+Filtered search result error
+![](/allspice.client/src/assets/img/error4.png)
+
+No matches found
+![](/allspice.client/src/assets/img/error5.png)
